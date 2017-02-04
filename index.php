@@ -7,7 +7,7 @@
   $depts = [["COSC", "MATH"]];
   $distribs = [["LIT", "NW"]];
   $periods = [["10","11","2"],["12"]];
-  $overall = array("depts" => 3, "distribs" => 0, "periods" => 1); // weighting term
+  $overall = array("depts" => 3, "distribs" => 0, "periods" => 1);
   $prereqs = [];
 ?>
 
