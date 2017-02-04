@@ -1,0 +1,29 @@
+.class h1 {
+	font-weight: normal;
+	margin: 0px;
+	padding: 0px;
+	font-size: 1.5em;
+	display: inline-block;
+}
+
+.class span.teacher {
+	color: #555;
+	font-size: 0.9em;
+	display: block;
+}
+
+.class {
+	padding: 20px 20px 0 20px;
+}
+
+.class p.description {
+	margin-top: 5px;
+}
+
+.class .right {
+	float: right;
+}
+
+.class .right span {
+	padding: 0 5px;
+}
