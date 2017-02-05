@@ -1,3 +1,8 @@
+/* Main styling */
+.form-group label {
+  display: block;
+}
+
 /* Search result */
 .class h1 {
   font-weight: normal;

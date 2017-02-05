@@ -46,30 +46,41 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-lg-12">
-              <div class="text-center">
-                <a href onClick="window.open('//dartmouth.edu/bannerstudent','_blank')">Get Cookie</a>
-              </div>
-              <code id="js">
-                prompt('Copy to Class Search', document.cookie.split(';')[3].slice(8)); window.close();
-              </code>
+              <p>
+                You can choose to scrape the classes you've already taken from Dartmouth.  This will prevent it from suggesting classes you've already taken.  The only information it will take is the department, class #, and name of each class you've taken.  <strong>This is optional.</strong>
+              </p>
+              <ol>
+                <li>
+                  Click the below code, and copy it.
+                  <code id="js">
+                    prompt('Copy to Class Search', document.cookie.split(';')[3].slice(8)); window.close();
+                  </code>
+                </li>
+                <li>
+                  Click the following link, and log into Banner:  <strong><a href onClick="window.open('//dartmouth.edu/bannerstudent','_blank')">Log In</a></strong>
+                </li>
+                <li>
+                  Open the DevTools, and run the javascript you just copied.  (Ctrl+Shift+I, or F12).  It will pop up a window with text selected.  Just copy it and hit 'Enter'.
+                </li>
+                <li>
+                  Paste into the Session ID input. 
+                </li>
+              </ol>
             </div>
           </div>
           <form>
             <div class="row">
               <div class="col-lg-12">
                 <div class="form-group">
-                  <label for="sessid">Session ID (get from above code)</label>
+                  <label for="sessid">Session ID (get from above instructions)</label>
                   <input type="text" class="form-control" placeholder="RS2JLz19CpZzQkXcHr==" name="sessid">
                 </div>
               </div>
             </div>
 
-            <div class="form-group">
-              <label>Criteria</label>
-              <div id="criteria">
-              </div>
-              <button type="button" onClick="addCriteria()" class="btn btn-success">Add Criteria</button>
+            <div id="criteria">
             </div>
+            <button type="button" onClick="addCriteria()" class="btn btn-success">Add Criteria</button>
 
             <button type="submit" class="btn btn-primary">Search</button>
           </form>
