@@ -1,6 +1,5 @@
 <?php
   include_once("php/util.php");
-  include_once("php/search.php"); 
   error_reporting(-1);
   ini_set('display_errors', 'On');
 
@@ -52,6 +51,6 @@
       </div>
     </div>
    
-    <?php echo getMatches($depts, $distribs, $periods, $overall, $prereqs); ?>
+    <?php // echo getMatches($depts, $distribs, $periods, $overall, $prereqs); ?>
   </body>
 </html>

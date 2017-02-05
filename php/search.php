@@ -6,136 +6,8 @@
 
   $term = "S2017";
 
-  /**
-   *  Gets all department matches
-   *
-   *  @param &$masterList: 
-   */
-  function getDept(&$masterList, &$weighting, $depts, $overall) {
-    global $PDO;
-    global $term;
-
-    foreach ($depts as $key => $chunk) {
-      if (count($chunk) > 0) {
-        $weight = (count($depts) - $key) / count($depts) + ($overall["depts"] - 1);
-
-        $query = "
-          SELECT *
-          FROM timetable
-          WHERE `term`='$term' AND number < 100 AND (
-        ";
-
-        // Handle all periods
-        foreach ($chunk as $key => $period) {
-          $query .= "department = ? OR ";
-        }
-        $query = substr($query, 0, -4);
-        $query .= ")";
-
-        $stmt = $PDO->prepare($query);
-
-        for ($i = 0; $i < count($chunk); $i++) {
-          $stmt->bindParam($i+1, $chunk[$i], PDO::PARAM_STR);
-        }
-
-        $stmt->execute();
-
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($data as $value) {
-          $masterList[$value['id']] = $value;
-          if (array_key_exists($value['id'], $weighting))
-            $weighting[$value['id']] += $weight;
-          else
-            $weighting[$value['id']] = $weight;
-        }
-      }
-    }
-  }
-
-  function getDistrib(&$masterList, &$weighting, $distribs, $overall) {
-    global $PDO;
-    global $term;
-
-    foreach ($distribs as $key => $chunk) {
-      if (count($chunk) > 0) {
-        $weight = (count($distribs) - $key) / count($distribs) + ($overall["distribs"] - 1);
-
-        $query = "
-          SELECT *
-          FROM timetable
-          WHERE `term`='$term' AND number < 100 AND (
-        ";
-
-        // Handle all periods
-        foreach ($chunk as $key => $period) {
-          $query .= "culture = :culture{$key} OR json_contains(distrib, :distrib{$key}) OR ";
-        }
-        $query = substr($query, 0, -4);
-        $query .= ")";
-
-        $stmt = $PDO->prepare($query);
-
-        for ($i = 0; $i < count($chunk); $i++) {
-          $stmt->bindParam(':culture' . $i, $chunk[$i], PDO::PARAM_STR);
-          $d = '"' . $chunk[$i] . '"';
-          $stmt->bindParam(':distrib' . $i, $d, PDO::PARAM_STR);
-        }
-
-        $stmt->execute();
-
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($data as $value) {
-          $masterList[$value['id']] = $value;
-          if (array_key_exists($value['id'], $weighting))
-            $weighting[$value['id']] += $weight;
-          else
-            $weighting[$value['id']] = $weight;
-        }
-      }
-    }
-  }
-
-  function getPeriod(&$masterList, &$weighting, $periods, $overall) {
-    global $PDO;
-    global $term;
-
-    // For each of the given periods, separate them into their respective chunks
-    foreach ($periods as $key => $chunk) {
-      if (count($chunk) > 0) {
-        // Calculate a weight based on the overall ranking
-        $weight = (count($periods) - $key) / count($periods) + ($overall["periods"] - 1);
-        // Construct the query
-        $query = "
-          SELECT *
-          FROM timetable
-          WHERE `term`='$term' AND number < 100 AND (
-        ";
-
-        // Handle all periods
-        foreach ($chunk as $key => $period) {
-          $query .= "period = ? OR ";
-        }
-        $query = substr($query, 0, -4);
-        $query .= ")";
-
-        $stmt = $PDO->prepare($query);
-        
-        for ($i = 0; $i < count($chunk); $i++) {
-          $stmt->bindParam($i+1, $chunk[$i], PDO::PARAM_STR);
-        }
-
-        $stmt->execute();
-
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($data as $value) {
-          $masterList[$value['id']] = $value;
-          if (array_key_exists($value['id'], $weighting))
-            $weighting[$value['id']] += $weight;
-          else
-            $weighting[$value['id']] = $weight;
-        }
-      }
-    }
+  function test($depts, $distribs, $periods, $overall, $sessid) {
+    // Get all the current
   }
 
   /**
@@ -210,5 +82,11 @@
     }
   }
 
-  getMatches();
+  if (isset($_POST["depts"])) {
+    echo "<pre>" . var_export($_POST, true) . "</pre>";
+    $classes = getClasses($_POST["sessid"]);
+    echo "<pre>" . var_export($classes, true) . "</pre>";
+  }
+
+  // getMatches();
 ?>
