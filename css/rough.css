@@ -1,29 +1,65 @@
+/* Search result */
 .class h1 {
-	font-weight: normal;
-	margin: 0px;
-	padding: 0px;
-	font-size: 1.5em;
-	display: inline-block;
+  font-weight: normal;
+  margin: 0px;
+  padding: 0px;
+  font-size: 1.5em;
+  display: inline-block;
 }
 
 .class span.teacher {
-	color: #555;
-	font-size: 0.9em;
-	display: block;
+  color: #555;
+  font-size: 0.9em;
+  display: block;
 }
 
 .class {
-	padding: 20px 20px 0 20px;
+  padding: 20px 20px 0 20px;
 }
 
 .class p.description {
-	margin-top: 5px;
+  margin-top: 5px;
 }
 
 .class .right {
-	float: right;
+  float: right;
 }
 
 .class .right span {
-	padding: 0 5px;
+  padding: 0 5px;
+}
+
+/* Chosen styling */
+.form-group > div.chosen-container .chosen-single, 
+.form-group > div.chosen-container .chosen-choices {
+  background-image: none;
+  background-color: white;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  padding: 6px 12px;
+  border-radius: 4px;
+  height: auto;
+  border: 1px solid #ccc;
+  box-shadow: none;
+}
+.form-group > div.chosen-container .chosen-choices {
+  padding: 3px 12px;
+}
+.form-group > div.chosen-container .chosen-drop,
+.form-group > div.chosen-container .chosen-drop {
+  border: 1px solid #ccc;
+}
+.form-group > div.chosen-container .chosen-choices .search-choice {
+  background-image: none;
+  background-color: rgba(0, 0, 0, 0.04);
+  border: 1px solid #ccc;
+  box-shadow: none;
+}
+.chosen-single div b {
+  height: 25px;
+  margin-top: 4px;
+}
+.chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
+  background-position-y: 2px;
 }

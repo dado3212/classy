@@ -10,6 +10,8 @@
   $term = "S2017";
 
   function canTake($class, $allClasses) {
+    if ($allClasses == null) return true; // handle if session token not passed
+
     foreach ($allClasses as $testClass) {
       if ($testClass["department"] == $class["department"] && $testClass["number"] == $class["number"]) {
         return false;
@@ -161,15 +163,19 @@
   }
 
   if (isset($_POST["criteria"])) {
-    $classes = getClasses($_POST["sessid"]);
+    $sessid = $_POST["sessid"];
 
-    if ($classes == null) {
-      echo "Sign in again, token no longer valid.";
+    if ($sessid) {
+      $classes = getClasses($_POST["sessid"]);
+      if ($classes == null) {
+        echo "Sign in again, token no longer valid.";
+        die();
+      }
     } else {
-      $matchesInformation = getMatches($_POST["criteria"], $classes);
-      formatMatches($matchesInformation);
+      $classes = null;
     }
-  }
 
-  // getMatches();
+    $matchesInformation = getMatches($_POST["criteria"], $classes);
+    formatMatches($matchesInformation);
+  }
 ?>

@@ -11,7 +11,7 @@
       <?php
         $departmentOptions = "";
         foreach ($departments as $code => $name) {
-          $departmentOptions .= "<option value='$code'>$name</option>";
+          $departmentOptions .= "<option value='$code'>$name ($code)</option>";
         }
 
         $distributiveOptions = "";
