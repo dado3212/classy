@@ -61,6 +61,39 @@
     "WRIT" => "Writing Program",
   ];
 
+  $distribs = [
+    "W" => "W",
+    "NW" => "NW",
+    "CI" => "CI",
+    "ART" => "ART",
+    "LIT" => "LIT",
+    "TMV" => "TMV",
+    "INT" => "INT",
+    "SOC" => "SOC",
+    "QDS" => "QDS",
+    "SCI" => "SCI",
+    "SLA" => "SLA",
+    "TAS" => "TAS",
+    "TLA" => "TLA"
+  ];
+
+  $periods = [
+    "8",
+    "9",
+    "9L",
+    "9S",
+    "10",
+    "10A",
+    "11",
+    "12",
+    "2",
+    "2A",
+    "3A",
+    "3B",
+    "6A",
+    "6B"
+  ];
+
   function getClasses($sessid) {
     $ch = curl_init("https://banner.dartmouth.edu/banner/groucho/bwskotrn.P_ViewTran");
     curl_setopt($ch, CURLOPT_COOKIE, "SESSID=$sessid" );
