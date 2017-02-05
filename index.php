@@ -1,13 +1,5 @@
 <?php
   include_once("php/util.php");
-  error_reporting(-1);
-  ini_set('display_errors', 'On');
-
-  $depts = [["COSC", "MATH"]];
-  $distribs = [["LIT", "NW"]];
-  $periods = [["10","11","2"],["12"]];
-  $overall = array("depts" => 3, "distribs" => 0, "periods" => 1);
-  $prereqs = [];
 ?>
 
 <!DOCTYPE html>
@@ -33,10 +25,10 @@
             <div class="panel-heading">How to Search</div>
             <div class="panel-body">
               <div class="text-center">
-                <a href="http://dartmouth.edu/bannerstudent" target="_blank" rel="noopener">Get Cookie</a>
+                <a href onClick="window.open('http://dartmouth.edu/bannerstudent','_blank')">Get Cookie</a>
               </div>
-              <code>
-                javascript:document.cookie.split(';')[3].slice(8);
+              <code id="js">
+                prompt('Copy to Class Search', document.cookie.split(';')[3].slice(8)); window.close();
               </code>
               <form>
                 <div class="form-group">
@@ -50,7 +42,7 @@
         </div>
       </div>
     </div>
-   
-    <?php // echo getMatches($depts, $distribs, $periods, $overall, $prereqs); ?>
+
+    <div id="output"></div>
   </body>
 </html>

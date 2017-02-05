@@ -73,7 +73,7 @@
     curl_close($ch);
 
     if (strpos($output, "A break in attempt has been detected!  Please login again.") !== false) {
-      return [];
+      return null;
     } else {
       $classes = [];
 
@@ -84,9 +84,9 @@
 
         for ($i = 0; $i < count($rawClasses[0]); $i++) {
           $classes[] = [
-            "dept" => $rawClasses[1][$i],
-            "course" => $rawClasses[2][$i],
-            "name" => $rawClasses[3][$i],
+            "department" => $rawClasses[1][$i],
+            "number" => $rawClasses[2][$i],
+            "title" => $rawClasses[3][$i],
           ];
         }
       }
