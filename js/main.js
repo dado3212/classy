@@ -1,7 +1,7 @@
 var CLASS_DEBUG_FLAG = false;
 
 // Adds a new row of criteria to the form
-function addCriteria(points) {
+function addCriteria(type, vals, points) {
   var newRow =  
     '<div class="row criteria">' + 
       '<div class="col-md-3">' + 
@@ -18,15 +18,23 @@ function addCriteria(points) {
       '<div class="col-md-6">' + 
         '<div class="form-group">' + 
           '<label>Choices</label>' + 
-          '<select name="choices" class="form-control" multiple required data-placeholder="Select Some Choices">' + 
-            departmentOptions + 
-          '</select>' + 
+          '<select name="choices" class="form-control" multiple required data-placeholder="Select Some Choices">';
+  if (!type || type == 'departments') {
+    newRow += departmentOptions;
+  } else if (type == 'distributives') {
+    newRow += distributiveOptions;
+  } else if (type == 'periods') {
+    newRow += periodOptions;
+  } else if (type == 'medians') {
+    newRow += medianOptions;
+  }
+  newRow+='</select>' + 
         '</div>' + 
       '</div>' + 
       '<div class="col-md-2">' + 
         '<div class="form-group">' + 
           '<label>Points</label>' + 
-          '<input name="weight" class="form-control" type="number" min="1" placeholder="Any number" required' + (points ? ' value="' + points + '"' : '') + '>' + 
+          '<input name="weight" class="form-control" type="number" min="1" placeholder="Any number" required>' + 
         '</div>' + 
       '</div>' + 
       '<div class="col-md-1">' + 
@@ -40,6 +48,19 @@ function addCriteria(points) {
   var rowElem = $.parseHTML(newRow);
   $('#criteria').append(rowElem);
 
+  // Handle optional default parameters
+  if (type) {
+    $(rowElem).find('select[name="type"] option[value="' + type + '"]').prop('selected', true);
+  }
+  if (vals) {
+    for (var i = 0; i < vals.length; i++) {
+      $(rowElem).find('select[name="choices"] option[value="' + vals[i] + '"]').prop('selected', true);
+    }
+  }
+  if (points) {
+    $(rowElem).find('input[name="weight"]').val(points);
+  }
+
   $(rowElem).find('select').chosen({
     search_contains: true,
     width: '100%',
@@ -48,16 +69,16 @@ function addCriteria(points) {
   // Add a listener to update the choices
   $(rowElem).find('select[name="type"]').on('change', function() {
     var selected = $(this).val();
-    if (selected == "departments") {
+    if (selected == 'departments') {
       $(rowElem).find('select[name^="choices"]').html($.parseHTML(departmentOptions));
-    } else if (selected == "distributives") {
+    } else if (selected == 'distributives') {
       $(rowElem).find('select[name^="choices"]').html($.parseHTML(distributiveOptions));
-    } else if (selected == "periods") {
+    } else if (selected == 'periods') {
       $(rowElem).find('select[name^="choices"]').html($.parseHTML(periodOptions));
-    } else if (selected == "medians") {
+    } else if (selected == 'medians') {
       $(rowElem).find('select[name^="choices"]').html($.parseHTML(medianOptions));
     }
-    $(rowElem).find('select[name^="choices"]').trigger("chosen:updated");
+    $(rowElem).find('select[name^="choices"]').trigger('chosen:updated');
   });
 
   // Add a listener to delete the row
@@ -129,8 +150,10 @@ $(document).ready(function() {
     return ret;
   };
 
-  // Start off with a criteria
-  addCriteria(1);
+  // Start off with default criteria
+  addCriteria('departments', ['ECON'], 3);
+  addCriteria('distributives', ['LIT'], 2);
+  addCriteria('periods', ['10','11'], 1);
 
   // Handles click to select on the javascript code
   $('code#js').on('click', function() {

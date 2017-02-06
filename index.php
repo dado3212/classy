@@ -2,12 +2,14 @@
   include_once("php/util.php");
 
   $keycode = getKeycode($_SERVER["HTTP_USER_AGENT"]);
+
+  $siteName = (isset($_GET["lit"]) ? "I Eat Class" : "DartClasses");
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>DartClasses</title>
+    <title><?php echo $siteName; ?></title>
     <?php
       if (preg_match("/(iPhone|iPod|iPad|Android|BlackBerry|Mobile)/i", $_SERVER['HTTP_USER_AGENT'])) {
         ?><meta name="viewport" content="width=500"><?php
@@ -55,7 +57,7 @@
     <div class="container">
       <div id="search">
         <form>
-          <h1>DartClasses</h1>
+          <h1><?php echo $siteName; ?></h1>
 
           <p class="overview">
             DartClasses is a way of searching for classes based on departments, distribs, periods, and medians.  It allows you to find the best fits for <i>you</i> based on your priorities in a course.
