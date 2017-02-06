@@ -57,10 +57,33 @@ body {
   fill: white;
 }
 
-/*.btn-secondary {
-  background-color: hsl(226, 100%, 42%);
-  border: 1px solid hsl(226, 100%, 35%);
-}*/
+/* Footer */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 85px;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background-color: #1d1d1d;
+  color: white;
+  text-align: center;
+}
+
+footer p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0px;
+}
 
 a {
   color: hsl(106, 100%, 42%);

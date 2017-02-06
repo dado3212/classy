@@ -63,10 +63,10 @@
                 Click the following link, and log into Banner:  <strong><a href="javaScript:void(0);" onClick="openBanner()">Log In</a></strong>
               </li>
               <li>
-                Open the DevTools, and run the javascript you just copied.  (Ctrl+Shift+I, or F12).  It will pop up a window with text selected.  Just copy it and hit 'Enter'.
+                Open the DevTools, and run the code you copied in step 1.  (Ctrl+Shift+I, or F12).  It will pop up a window with text selected.  Copy that new text and hit 'Enter'.
               </li>
               <li>
-                Paste into the Session ID input. 
+                Paste into the Session ID input.
               </li>
             </ol>
           </div>
@@ -81,15 +81,28 @@
             </div>
           </div>
 
+          <div class="row">
+            <div class="col-lg-12">
+              <p>
+                You can build a search by using criteria.  You can add a criteria for the <strong>department</strong>, <strong>distrib</strong>, or <strong>period</strong>.  For each criteria, you can then choose one or more of the associated values, and give it a number of points.  Classes that meet elements of each criteria will be given that number of points, and the top classes will be returned, sorted by median.
+              </p>
+            </div>
+          </div>
+
           <div id="criteria">
           </div>
           <button type="button" onClick="addCriteria()" class="btn btn-secondary">Add Criteria</button>
-
           <button type="submit" class="btn btn-primary">Search</button>
         </form>
       </div>
 
       <div id="classes"></div>
     </div>
+
+    <footer>
+      <p>
+        Made by <a href="//alexbeals.com">Alex Beals</a> '18.
+      </p>
+    </footer>
   </body>
 </html>

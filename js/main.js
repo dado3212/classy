@@ -23,7 +23,7 @@ function addCriteria() {
       '</div>' + 
       '<div class="col-md-2">' + 
         '<div class="form-group">' + 
-          '<label>Weight</label>' + 
+          '<label>Points</label>' + 
           '<input name="weight" class="form-control" type="number" min="0" placeholder="Any number" required>' + 
         '</div>' + 
       '</div>' + 
@@ -107,6 +107,9 @@ $(document).ready(function() {
     }
     return ret;
   };
+
+  // Start off with a criteria
+  addCriteria();
 
   // Handles click to select on the javascript code
   $('code#js').on('click', function() {
