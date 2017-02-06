@@ -41,6 +41,20 @@ body {
 .btn-danger {
   background-color: hsl(346, 100%, 42%);
   border: 1px solid hsl(346, 100%, 35%);
+  position: relative;
+  width: 100%;
+}
+
+.btn-danger svg {
+  width: 100%;
+  height: 20px;
+  position: absolute;
+  top: 5px;
+  left: 0px;
+}
+
+.btn-danger svg * {
+  fill: white;
 }
 
 /*.btn-secondary {
