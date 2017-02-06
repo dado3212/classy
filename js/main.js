@@ -163,7 +163,7 @@ $(document).ready(function() {
           input[0].setCustomValidity('');
         } else {
           input.attr('validity', 'invalid');
-          input[0].setCustomValidity('This session token is invalid.  Please retry the steps, and don\'t log into Banner anywhere else.');
+          input[0].setCustomValidity('This session token is invalid.  Please retry the steps.  If you don\'t want to use this option, just delete all text in the input.');
           input[0].reportValidity();
         }
         checkingValidity = false;
