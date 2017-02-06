@@ -72,7 +72,6 @@ function formatClasses(classes) {
   var classText = '';
   for (var i = 0; i < classes.length; i++) {
     var c = classes[i];
-    console.log(c);
     classText += 
       '<div class="class">' +
         '<div class="title"><span>' + c.department + ' ' + c.class + '</span> - ' + c.title + '</div>' + 
@@ -138,7 +137,6 @@ $(document).ready(function() {
     }, function(data) {
       console.log(data);
       formatClasses(JSON.parse(data));
-      //$('#classes').html(data);
     });
   });
 });

@@ -64,6 +64,7 @@
       if (
         (in_array($rawClass["department"], $allDepts) || 
         count(array_intersect($allDistribs, json_decode($rawClass["distrib"]))) > 0 || 
+        in_array($rawClass["culture"], $allDistribs) || 
         in_array($rawClass["period"], $allPeriods)) &&
         canTake($rawClass, $classes)
       ) {
@@ -80,7 +81,11 @@
               }
             }
           } else if ($criterion["type"] == "distributives") {
-            $weighting[$rawClass["id"]] += $criterion["weight"] * count(array_intersect($criterion["value"], json_decode($rawClass["distrib"])));
+            foreach ($criterion["value"] as $distrib) {
+              if (in_array($distrib, json_decode($rawClass["distrib"])) || $distrib == $rawClass["culture"]) {
+                $weighting[$rawClass["id"]] += $criterion["weight"];
+              }
+            }
           } else if ($criterion["type"] == "periods") {
             foreach ($criterion["value"] as $period) {
               if ($period == $rawClass["period"]) {
@@ -135,14 +140,15 @@
         $median = $medianSTMT->fetch(PDO::FETCH_ASSOC);
         $median = (isset($median["median"]) ? $median["median"] : "N/A");
         $prereqs = preg_replace('/The Timetable of Class Meetings contains.*/', '', $orc_data["prereqs"]);
+        $distribs = json_decode($class["distrib"]);
+        if ($class["culture"] != "") { $distribs[] = $class["culture"]; }
 
         $results[] = [
           "department" => $departments[$class["department"]],
           "class" => $class["number"],
           "title" => $class["title"],
           "period" => $class["period"],
-          "culture" => $class["culture"],
-          "distribs" => json_decode($class["distrib"]),
+          "distribs" => $distribs,
           "prereqs" => $prereqs,
           "median" => $median,
           "teacher" => $class["teacher"],
