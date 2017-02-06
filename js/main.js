@@ -19,7 +19,6 @@ function addCriteria(points) {
         '<div class="form-group">' + 
           '<label>Choices</label>' + 
           '<select name="choices" class="form-control" multiple required data-placeholder="Select Some Choices">' + 
-            '<optgroup disabled hidden></optgroup>' + 
             departmentOptions + 
           '</select>' + 
         '</div>' + 

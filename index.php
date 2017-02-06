@@ -15,22 +15,22 @@
     ?>
     <script>
       <?php
-        $departmentOptions = "";
+        $departmentOptions = "<optgroup disabled hidden></optgroup>";
         foreach ($departments as $code => $name) {
           $departmentOptions .= "<option value='$code'>$name ($code)</option>";
         }
 
-        $distributiveOptions = "";
+        $distributiveOptions = "<optgroup disabled hidden></optgroup>";
         foreach ($distribs as $code => $name) {
           $distributiveOptions .= "<option value='$code'>$name</option>";
         }
 
-        $periodOptions = "";
+        $periodOptions = "<optgroup disabled hidden></optgroup>";
         foreach ($periods as $code => $name) {
           $periodOptions .= "<option value='$code'>$name</option>";
         }
 
-        $medianOptions = "";
+        $medianOptions = "<optgroup disabled hidden></optgroup>";
         foreach ($medians as $code => $value) {
           $medianOptions .= "<option vallue='$code'>$code</option>";
         }

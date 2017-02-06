@@ -138,6 +138,7 @@ code#js {
 
 .title {
   font-size: 22px;
+  max-width: calc(100% - 70px);
 }
 
 .title span {
