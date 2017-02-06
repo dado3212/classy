@@ -28,6 +28,7 @@
     $allDepts = [];
     $allDistribs = [];
     $allPeriods = [];
+    $allMedians = [];
     foreach ($criteria as $criterion) {
       if ($criterion["type"] == "departments") {
         foreach ($criterion["value"] as $dept) {
@@ -45,6 +46,12 @@
         foreach ($criterion["value"] as $period) {
           if (!in_array($period, $allPeriods)) {
             $allPeriods[] = $period;
+          }
+        }
+      } else if ($criterion["type"] == "medians") {
+        foreach ($criterion["value"] as $median) {
+          if (!in_array($median, $allMedians)) {
+            $allMedians[] = $median;
           }
         }
       }
@@ -70,7 +77,8 @@
         (in_array($rawClass["department"], $allDepts) || 
         count(array_intersect($allDistribs, json_decode($rawClass["distrib"]))) > 0 || 
         in_array($rawClass["culture"], $allDistribs) || 
-        in_array($rawClass["period"], $allPeriods)) &&
+        in_array($rawClass["period"], $allPeriods) || 
+        in_array($rawClass["median"], $allMedians)) &&
         canTake($rawClass, $classes)
       ) {
         // Add the class to the list
@@ -96,6 +104,12 @@
           } else if ($criterion["type"] == "periods") {
             foreach ($criterion["value"] as $period) {
               if ($period == $rawClass["period"]) {
+                $results[$rawClass["id"]]["weight"] += $criterion["weight"];
+              }
+            }
+          } else if ($criterion["type"] == "medians") {
+            foreach ($criterion["value"] as $median) {
+              if ($median == $rawClass["median"]) {
                 $results[$rawClass["id"]]["weight"] += $criterion["weight"];
               }
             }

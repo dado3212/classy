@@ -9,6 +9,7 @@ function addCriteria(points) {
             '<option value="departments">Departments</option>' + 
             '<option value="distributives">Distributives</option>' + 
             '<option value="periods">Periods</option>' + 
+            '<option value="medians">Medians</option>' + 
           '</select>' + 
         '</div>' + 
       '</div>' + 
@@ -52,6 +53,8 @@ function addCriteria(points) {
       $(rowElem).find('select[name^="choices"]').html($.parseHTML(distributiveOptions));
     } else if (selected == "periods") {
       $(rowElem).find('select[name^="choices"]').html($.parseHTML(periodOptions));
+    } else if (selected == "medians") {
+      $(rowElem).find('select[name^="choices"]').html($.parseHTML(medianOptions));
     }
     $(rowElem).find('select[name^="choices"]').trigger("chosen:updated");
   });
@@ -70,7 +73,6 @@ function openBanner() {
 
 // Handles formatting the class results
 function formatClasses(classes) {
-  console.log(classes);
   var classText = '';
   for (var i = 0; i < classes.length; i++) {
     var c = classes[i];

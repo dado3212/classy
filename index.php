@@ -29,10 +29,16 @@
         foreach ($periods as $code => $name) {
           $periodOptions .= "<option value='$code'>$name</option>";
         }
+
+        $medianOptions = "";
+        foreach ($medians as $code => $value) {
+          $medianOptions .= "<option vallue='$code'>$code</option>";
+        }
       ?>
       var departmentOptions = "<?php echo $departmentOptions; ?>;";
       var distributiveOptions = "<?php echo $distributiveOptions; ?>;";
       var periodOptions = "<?php echo $periodOptions; ?>";
+      var medianOptions = "<?php echo $medianOptions; ?>";
     </script>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
@@ -58,7 +64,7 @@
           <h4>Criteria and Points Explanation</h4>
           <div>
             <p>
-              You can build a search by using criteria.  You can add a criteria for the <strong>department</strong>, <strong>distrib</strong>, or <strong>period</strong>.  For each criteria, you can then choose one or more of the choices, and give it a number of points.  Classes that meet elements of each criteria will be given the number of points for that criteria, and the top classes will be returned, sorted by median.  If you're only searching for one criteria, the number of points is irrelevant.
+              You can build a search by using criteria.  You can add a criteria for the <strong>department</strong>, <strong>distrib</strong>, <strong>period</strong>, or <strong>median</strong>.  For each criteria, you can then choose one or more of the choices, and give it a number of points.  Classes that meet elements of each criteria will be given the number of points for that criteria, and the top classes will be returned, sorted by median.  If you're only searching for one criteria, the number of points is irrelevant.
             </p>
             <p>
               For example, you have three criteria.  The first, for the ECON department, gives 3 points.  The second, for the distrib 'LIT', gives 2 points.  The third, for the time blocks '10' and '11', gives 1 point.  This means that it is most important that the class be in the ECON department, slightly less important that it be a LIT course, and least important that it be a 10 or 11 (but still better than nothing).

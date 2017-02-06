@@ -151,19 +151,19 @@
         } else if (stripos($agent, "Safari") !== false) {
             return "Cmd+Opt+C";
         }
-    }
-    if ( stripos($agent, 'Firefox') !== false ) {
-        return 'firefox';
-    } elseif ( stripos($agent, 'MSIE') !== false ) {
-        return 'ie';
-    } elseif ( stripos($agent, 'iPad') !== false ) {
-        return 'ipad';
-    } elseif ( stripos($agent, 'Android') !== false ) {
-        return 'android';
-    } elseif ( stripos($agent, 'Chrome') !== false ) {
-        return 'chrome';
-    } elseif ( stripos($agent, 'Safari') !== false ) {
-        return 'safari';
-    }
+    } // need to finish testing
+    // if ( stripos($agent, 'Firefox') !== false ) {
+    //     return 'firefox';
+    // } elseif ( stripos($agent, 'MSIE') !== false ) {
+    //     return 'ie';
+    // } elseif ( stripos($agent, 'iPad') !== false ) {
+    //     return 'ipad';
+    // } elseif ( stripos($agent, 'Android') !== false ) {
+    //     return 'android';
+    // } elseif ( stripos($agent, 'Chrome') !== false ) {
+    //     return 'chrome';
+    // } elseif ( stripos($agent, 'Safari') !== false ) {
+    //     return 'safari';
+    // }
   }
 ?>
