@@ -51,13 +51,17 @@
         <form>
           <h1>DartClasses</h1>
 
+          <p class="overview">
+            DartClasses is a way of searching for classes based on departments, distribs, periods, and medians.  It allows you to find the best fits for <i>you</i> based on your priorities in a course.
+          </p>
+
           <h4>Criteria and Points Explanation</h4>
           <div>
             <p>
               You can build a search by using criteria.  You can add a criteria for the <strong>department</strong>, <strong>distrib</strong>, or <strong>period</strong>.  For each criteria, you can then choose one or more of the choices, and give it a number of points.  Classes that meet elements of each criteria will be given the number of points for that criteria, and the top classes will be returned, sorted by median.  If you're only searching for one criteria, the number of points is irrelevant.
             </p>
             <p>
-              For example, you have three criteria.  One, for the 'ECON' department, gives 3 points.  The second, for the distrib 'LIT', gives 2 points.  The third, for the time blocks '10' and '11', gives 1 point.  This means that it is most important that the class be in the ECON department, slightly less important that it be a LIT course, and least important that it be a 10 or 11 (but still better than nothing).
+              For example, you have three criteria.  The first, for the ECON department, gives 3 points.  The second, for the distrib 'LIT', gives 2 points.  The third, for the time blocks '10' and '11', gives 1 point.  This means that it is most important that the class be in the ECON department, slightly less important that it be a LIT course, and least important that it be a 10 or 11 (but still better than nothing).
             </p>
             <p>
               An ECON class in the 10A block would have 3 points.  A class in the 11 block with the 'LIT' distrib would also have 3 points.  An ECON class in the 10 block with the 'LIT' distrib would have the maximum of 6 points.
@@ -66,14 +70,14 @@
 
           <div id="criteria">
           </div>
-          <button type="button" onClick="addCriteria()" class="btn btn-secondary">Add Criteria</button>
+          <button type="button" onClick="addCriteria()" class="btn btn-secondary">Add New Criteria</button>
 
           <h4>Getting Past Classes</h4>
           <p>
             You can choose to scrape the classes you've already taken from Dartmouth.  This will prevent it from suggesting classes you've already taken.  The only information it will take is the department, class #, and name of each class you've taken.
           </p>
           <p>
-            <strong>This is optional, and slightly technical.  If you don't feel comfortable with computers, feel free to skip this.</strong>
+            <strong>This is optional, and slightly technical.  If you don't feel comfortable with computers, feel free to skip this.  Additionally, this is <i>not</i> possible on mobile.</strong>
           </p>
           <a href onClick="return toggleBannerText(this);">Show Scraping Steps</a>
           <div id="scrapingSteps" style="display: none;">

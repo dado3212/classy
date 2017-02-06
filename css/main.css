@@ -4,6 +4,7 @@ body {
   background-color: #222;
 
   font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
 }
 
 ::selection {
@@ -65,6 +66,10 @@ body {
   margin: 10px auto 0 auto;
   display: block;
   padding: 6px 10px;
+}
+
+button, .form-group {
+  font-weight: normal;
 }
 
 /* Footer */
@@ -239,4 +244,17 @@ code#js {
 }
 .chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
   background-position-y: 2px;
+}
+
+.overview {
+  max-width: 50%;
+  min-width: 350px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+@media (max-width: 991px) {
+  label.empty {
+    height: 0px;
+  }
 }

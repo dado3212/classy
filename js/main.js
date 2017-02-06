@@ -4,7 +4,7 @@ function addCriteria(points) {
     '<div class="row criteria">' + 
       '<div class="col-md-3">' + 
         '<div class="form-group">' + 
-          '<label>Type</label>' + 
+          '<label>Criteria Type</label>' + 
           '<select name="type" class="form-control" required>' + 
             '<option value="departments">Departments</option>' + 
             '<option value="distributives">Distributives</option>' + 
@@ -29,7 +29,7 @@ function addCriteria(points) {
       '</div>' + 
       '<div class="col-md-1">' + 
         '<div class="form-group">' + 
-          '<label>&nbsp;</label>' + 
+          '<label class="empty">&nbsp;</label>' + 
           '<button type="button" class="btn btn-danger">&nbsp;<svg height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"><g fill="#37404D"><path d="M445 67h-99.5V47c0-22-17.8-39.7-39.7-39.7h-99.4c-22 0-39.7 17.8-39.7 39.7v20H67.4v19.8h20.4l20 377.5c0 22 17.7 39.7 39.7 39.7H366c22 0 39.7-17.8 39.7-39.7l19.6-377.5H445v-20zM186.5 47c0-11 9-19.8 19.8-19.8h99.4c11 0 19.8 9 19.8 19.8v20h-139V47zM386 463.2v1.1c0 11-9 19.8-20 19.8H147.5c-11 0-20-8.8-20-19.7v-1.1L107.8 86.8h297.7L386 463.2z"/><path d="M246.2 126.5h20v318h-20zM207 443.8l-20.4-317.3-20 1.3L187.2 445M345.6 127l-19.8-1-20 317.8 19.8 1.2"/></g></svg></button>' + 
         '</div>' + 
       '</div>' + 
