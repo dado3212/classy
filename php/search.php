@@ -105,7 +105,7 @@
    *  Given your ordered departments, distribs, periods, and overall weighting, returns your main classes
    *
    */
-  function formatMatches($info) {
+  function mainClasses($info) {
     global $PDO;
     global $departments;
 
@@ -113,6 +113,8 @@
     $weighting = $info["weights"];
 
     $count = 0;
+
+    $results = [];
 
     foreach ($weighting as $key => $value) {
       if ($count < 25) {
@@ -122,44 +124,36 @@
         $stmt->bindParam(":dept", $class['department'], PDO::PARAM_STR);
         $stmt->bindParam(":number", $class['number'], PDO::PARAM_STR);
         $stmt->execute();
-        $data = $stmt->fetch();
+        $orc_data = $stmt->fetch();
 
-        echo "<div class='class'>";
-        echo "<h1><strong>{$departments[$class['department']]} {$class['number']}</strong> - {$class['title']}</h1>";
-        echo "<span class='right'>";
+        // Get the median
+        $medianSTMT = $PDO->prepare("SELECT median FROM medians WHERE department=:dept AND number=:number");
+        $medianSTMT->bindParam(":dept", $class['department'], PDO::PARAM_STR);
+        $medianSTMT->bindParam(":number", $class['number'], PDO::PARAM_STR);
+        $medianSTMT->execute();
 
-        echo "<span>Period: {$class['period']}</span>";
-        if ($class['culture'] == "")
-          echo "<span>Culture: N/A</span>";
-        else
-          echo "<span>Culture: {$class['culture']}</span>";
-        if ($class['distrib'] == [])
-          echo "<span>Distribs: N/A</span>";
-        else
-          echo "<span>Distribs: {$class['distrib']}</span>";
-        echo "<span>Prereqs: {$data['prereqs']}</span>";
+        $median = $medianSTMT->fetch(PDO::FETCH_ASSOC);
+        $median = (isset($median["median"]) ? $median["median"] : "N/A");
+        $prereqs = preg_replace('/The Timetable of Class Meetings contains.*/', '', $orc_data["prereqs"]);
 
-        echo "</span>";
-        echo "<span class='teacher'>{$class['teacher']}</span>";
+        $results[] = [
+          "department" => $departments[$class["department"]],
+          "class" => $class["number"],
+          "title" => $class["title"],
+          "period" => $class["period"],
+          "culture" => $class["culture"],
+          "distribs" => json_decode($class["distrib"]),
+          "prereqs" => $prereqs,
+          "median" => $median,
+          "teacher" => $class["teacher"],
+          "description" => $class["description"],
+        ];
 
-        $description = $class['description'];
-        if ($description != "")
-          echo "<p class='description'>{$class['description']}</p>";
-        else if ($class['crosslisted'] != "[]"){
-          $stmt = $PDO->prepare("SELECT * FROM orc WHERE department=:dept AND number=:number");
-          $stmt->bindParam(":dept", explode(" ", json_decode($class['crosslisted'], true)[0])[0], PDO::PARAM_STR);
-          $stmt->bindParam(":number", explode(" ", json_decode($class['crosslisted'], true)[0])[1], PDO::PARAM_STR);
-          $stmt->execute();
-          $data = $stmt->fetch();
-          echo "<p class='description'>{$data['description']}</p>";
-        } else {
-          echo "<p class='description'>No description.</p>";
-        }
-
-        echo "</div>";
         $count++;
       }
     }
+
+    return $results;
   }
 
   if (isset($_POST["criteria"])) {
@@ -176,6 +170,6 @@
     }
 
     $matchesInformation = getMatches($_POST["criteria"], $classes);
-    formatMatches($matchesInformation);
+    echo json_encode(mainClasses($matchesInformation));
   }
 ?>

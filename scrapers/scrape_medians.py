@@ -164,7 +164,7 @@ def getMedians(term):
 def compileMedians():
   quarters = ["F", "W", "S", "X"]
   years = [str(x).zfill(2) for x in range(9, int(time.strftime("%Y")[2:])+1)] # years from 09 to current
-  all_courses = []
+  all_courses = {}
 
   for year in years:
     for quarter in quarters:
@@ -176,37 +176,24 @@ def compileMedians():
         class_size = term_courses[course][0]
         median = term_courses[course][1]
 
-        all_courses.append([course.split(" ")[0], course.split(" ")[1], median, str(class_size), term])
+        if course in all_courses:
+          all_courses[course].append({"term": term, "median": median, "enrollment": str(class_size)})
+        else:
+          all_courses[course] = [{"term": term, "median": median, "enrollment": str(class_size)}]
+
+  all_medians = []
+  for course in all_courses:
+    medians = all_courses[course]
+
+    median_grades = []
+    for median in medians:
+      median_grades.append(median["median"])
+
+    avg_median = getAvgMedian(median_grades)
+    all_medians.append([course.split(" ")[0], course.split(" ")[1], avg_median])
 
   with open('medians.csv', 'wb') as fp:
     a = csv.writer(fp, delimiter=',', encoding="utf-8", quoting=csv.QUOTE_ALL)
-    a.writerows(all_courses)
-
-def getTrendData():
-  json_data = open(course_data_file)
-  course_data = json.load(json_data)
-
-  trend_data = {}
-
-  for course in course_data:
-    medians = course_data[course]
-
-    num_terms = num_enrolled = 0
-    median_grades = []
-
-    for median in medians:
-      num_enrolled += int(median["enrollment"])
-      median_grades.append(median["median"])
-      num_terms += 1
-
-    if (num_enrolled != 0):
-      avg_enrolled = num_enrolled / num_terms
-      avg_median = getAvgMedian(median_grades)
-      trend_data[course] = {"median": avg_median, "enrollment": str(avg_enrolled)}
-    else:
-      print("No data for this course?!?")
-
-  with open(trend_data_file, "w") as f:
-    f.write(json.dumps(trend_data))  
+    a.writerows(all_medians)
 
 compileMedians()

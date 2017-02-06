@@ -1,37 +1,107 @@
 /* Main styling */
+body {
+  margin-top: 20px;
+  background-color: #222;
+
+  font-family: 'Open Sans', sans-serif;
+}
+
+.panel {
+  background-color: #393939;
+  color: white;
+}
+
 .form-group label {
   display: block;
 }
 
 /* Search result */
-.class h1 {
-  font-weight: normal;
-  margin: 0px;
-  padding: 0px;
-  font-size: 1.5em;
-  display: inline-block;
-}
-
-.class span.teacher {
-  color: #555;
-  font-size: 0.9em;
-  display: block;
-}
-
 .class {
-  padding: 20px 20px 0 20px;
+  padding: 20px;
+  background-color: #393939;
+  color: white;
+  font-weight: 300;
+  position: relative;
+
+  border-style: solid;
+  border-bottom-width: 1px;
+  border-image: linear-gradient(to right, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.07)) 0 0 1 0;
+  border-image-repeat: stretch;
+  border-image-width: 0 0 1px 0;
 }
 
-.class p.description {
-  margin-top: 5px;
+.title {
+  font-size: 22px;
 }
 
-.class .right {
-  float: right;
+.title span {
+  font-weight: normal;
 }
 
-.class .right span {
-  padding: 0 5px;
+.teacher {
+  margin: 5px 0;
+  font-size: 0.9em;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.prereqs {
+  margin: 5px 0;
+}
+
+.distribs {
+  margin: 10px 0;
+}
+
+.distribs span {
+  padding: 2px 12px;
+  border: 1px solid hsla(106, 100%, 42%, 0.95);
+  border-radius: 6px;
+  transition: 0.3s all ease;
+}
+
+.distribs span:hover {
+  background-color: hsla(106, 100%, 42%, 0.95);
+  cursor: default;
+}
+
+.description {
+  margin-top: 10px
+}
+
+.period, .median {
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  text-align: center;
+  background-color: hsla(106, 100%, 42%, 0.95);
+  width: 46px;
+  height: 46px;
+  line-height: 46px;
+  border-radius: 23px;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.median {
+  background-color: hsla(106, 100%, 33%, 0.95);
+  top: 43px;
+  right: 39px;
+}
+ 
+.median.length-2 {
+  font-size: 1.5em;
+}
+
+.median.length-3 {
+  font-size: 1.3em;
+}
+
+.median.length-4 {
+  font-size: 1.2em;
+}
+
+.median.length-5 {
+  font-size: 1em;
 }
 
 /* Chosen styling */

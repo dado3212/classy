@@ -1,4 +1,4 @@
-// Handles adding new criteria
+// Adds a new row of criteria to the form
 function addCriteria() {
   var newRow =  
     '<div class="row criteria">' + 
@@ -60,6 +60,39 @@ function addCriteria() {
   });
 }
 
+// Opens banner (maybe could be leveraged to run some code)
+function openBanner() {
+  var banner = window.open('//dartmouth.edu/bannerstudent','_blank');
+  return false;
+}
+
+// Handles formatting the class results
+function formatClasses(classes) {
+  console.log(classes);
+  var classText = '';
+  for (var i = 0; i < classes.length; i++) {
+    var c = classes[i];
+    console.log(c);
+    classText += 
+      '<div class="class">' +
+        '<div class="title"><span>' + c.department + ' ' + c.class + '</span> - ' + c.title + '</div>' + 
+        '<div class="teacher">' + c.teacher + '</div>' + 
+        '<div class="distribs">';
+    for (var j = 0; j < c.distribs.length; j++) {
+      classText += 
+          '<span>' + c.distribs[j] + '</span>';
+    }
+    classText += 
+        '</div>' + 
+        '<div class="prereqs">Prereqs: ' + c.prereqs + '</div>' + 
+        '<div class="description">' + c.description + '</div>' + 
+        '<div class="median length-' + c.median.length + '">' + c.median + '</div>' + 
+        '<div class="period">' + c.period + '</div>' + 
+      '</div>';
+  }
+  $('#classes').html(classText);
+}
+
 $(document).ready(function() {
   // Handle Chosen.js override to support 'required' (adapted from github issue: https://github.com/harvesthq/chosen/issues/515#issuecomment-104602031)
   $.fn.oldChosen = $.fn.chosen;
@@ -103,7 +136,9 @@ $(document).ready(function() {
       criteria: criteria,
       sessid: $('form input[name="sessid"]').val(),
     }, function(data) {
-      $('#output').html(data);
+      console.log(data);
+      formatClasses(JSON.parse(data));
+      //$('#classes').html(data);
     });
   });
 });
