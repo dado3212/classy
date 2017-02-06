@@ -15,7 +15,8 @@ function addCriteria() {
       '<div class="col-md-6">' + 
         '<div class="form-group">' + 
           '<label>Choices</label>' + 
-          '<select name="choices" class="form-control" multiple required>' +
+          '<select name="choices" class="form-control" multiple required>' + 
+            '<optgroup disabled hidden></optgroup>' + 
             departmentOptions + 
           '</select>' + 
         '</div>' + 
@@ -39,6 +40,7 @@ function addCriteria() {
 
   $(rowElem).find('select').chosen({
     search_contains: true,
+    width: '100%',
   });
 
   // Add a listener to update the choices

@@ -6,7 +6,11 @@
 <html lang="en">
   <head>
     <title>Find Classes</title>
-
+    <?php
+      if (preg_match("/(iPhone|iPod|iPad|Android|BlackBerry|Mobile)/i", $_SERVER['HTTP_USER_AGENT'])) {
+        ?><meta name="viewport" content="width=500"><?php
+      }
+    ?>
     <script>
       <?php
         $departmentOptions = "";

@@ -94,6 +94,22 @@
     "6B" => "6B",
   ];
 
+  $medians = [
+    "A" =>      6,
+    "A/A-" =>   5.5,
+    "A-" =>     5,
+    "A-/B+" =>  4.5,
+    "B+" =>     4,
+    "B+/B" =>   3.5,
+    "B" =>      3,
+    "B/B-" =>   2.5,
+    "B-" =>     2,
+    "B-/C+" =>  1.5,
+    "C+" =>     1,
+    "C+/C" =>   0.5,
+    "C" =>      0,
+  ];
+
   function getClasses($sessid) {
     $ch = curl_init("https://banner.dartmouth.edu/banner/groucho/bwskotrn.P_ViewTran");
     curl_setopt($ch, CURLOPT_COOKIE, "SESSID=$sessid" );

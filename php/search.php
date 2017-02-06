@@ -50,14 +50,19 @@
       }
     }
 
-    // Get all the current classes in the term that meet the base criteria
-    $stmt = $PDO->prepare("SELECT * FROM timetable WHERE `term`='$term' AND `number` < 100");
+    // Get all the current classes
+    $stmt = $PDO->prepare("
+      SELECT timetable.*, medians.median, orc.prereqs FROM timetable
+      LEFT JOIN medians
+      ON timetable.department = medians.department AND timetable.`number` = medians.`number`
+      LEFT JOIN orc
+      ON timetable.department = orc.department AND timetable.`number` = orc.`number`
+      WHERE timetable.term = '$term' AND timetable.`number` < 100");
     $stmt->execute();
 
     $rawClasses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $masterList = [];
-    $weighting = [];
+    $results = [];
 
     foreach ($rawClasses as $rawClass) {
       // If it meets at least some of the criteria
@@ -69,27 +74,29 @@
         canTake($rawClass, $classes)
       ) {
         // Add the class to the list
-        $masterList[$rawClass["id"]] = $rawClass;
-        $weighting[$rawClass["id"]] = 0;
+        $results[$rawClass["id"]] = [
+          "info" => $rawClass,
+          "weight" => 0,
+        ];
 
         // Figure out its worth
         foreach ($criteria as $criterion) {
           if ($criterion["type"] == "departments") {
             foreach ($criterion["value"] as $dept) {
               if ($dept == $rawClass["department"]) {
-                $weighting[$rawClass["id"]] += $criterion["weight"];
+                $results[$rawClass["id"]]["weight"] += $criterion["weight"];
               }
             }
           } else if ($criterion["type"] == "distributives") {
             foreach ($criterion["value"] as $distrib) {
               if (in_array($distrib, json_decode($rawClass["distrib"])) || $distrib == $rawClass["culture"]) {
-                $weighting[$rawClass["id"]] += $criterion["weight"];
+                $results[$rawClass["id"]]["weight"] += $criterion["weight"];
               }
             }
           } else if ($criterion["type"] == "periods") {
             foreach ($criterion["value"] as $period) {
               if ($period == $rawClass["period"]) {
-                $weighting[$rawClass["id"]] += $criterion["weight"];
+                $results[$rawClass["id"]]["weight"] += $criterion["weight"];
               }
             }
           }
@@ -97,49 +104,43 @@
       }
     }
 
-    // Sort by highest weight
-    arsort($weighting);
+    // Sort by highest weight, then by median
+    usort($results, function ($a, $b) {
+      global $medians;
 
-    return [
-      "list" => $masterList,
-      "weights" => $weighting,
-    ];
+      $a_median = ($a["info"]["median"] ? $medians[$a["info"]["median"]] : -0.5);
+      $b_median = ($b["info"]["median"] ? $medians[$b["info"]["median"]] : -0.5);
+
+      if ($b["weight"] == $a["weight"]) {
+        if ($b_median == $a_median) {
+          return 0;
+        } else {
+          return ($b_median - $a_median < 0 ? -1 : 1);
+        }
+      } else {
+        return ($b["weight"] - $a["weight"] < 0) ? -1 : 1;
+      }
+    });
+
+    return array_map(function ($a) { return $a["info"]; }, $results);
   }
 
   /**
    *  Given your ordered departments, distribs, periods, and overall weighting, returns your main classes
    *
    */
-  function mainClasses($info) {
+  function mainClasses($classes) {
     global $PDO;
     global $departments;
-
-    $masterList = $info["list"];
-    $weighting = $info["weights"];
 
     $count = 0;
 
     $results = [];
 
-    foreach ($weighting as $key => $value) {
+    foreach ($classes as $class) {
       if ($count < 25) {
-        $class = $masterList[$key];
-
-        $stmt = $PDO->prepare("SELECT * FROM orc WHERE department=:dept AND number=:number");
-        $stmt->bindParam(":dept", $class['department'], PDO::PARAM_STR);
-        $stmt->bindParam(":number", $class['number'], PDO::PARAM_STR);
-        $stmt->execute();
-        $orc_data = $stmt->fetch();
-
-        // Get the median
-        $medianSTMT = $PDO->prepare("SELECT median FROM medians WHERE department=:dept AND number=:number");
-        $medianSTMT->bindParam(":dept", $class['department'], PDO::PARAM_STR);
-        $medianSTMT->bindParam(":number", $class['number'], PDO::PARAM_STR);
-        $medianSTMT->execute();
-
-        $median = $medianSTMT->fetch(PDO::FETCH_ASSOC);
-        $median = (isset($median["median"]) ? $median["median"] : "N/A");
-        $prereqs = preg_replace('/The Timetable of Class Meetings contains.*/', '', $orc_data["prereqs"]);
+        $median = (isset($class["median"]) ? $class["median"] : "N/A");
+        $prereqs = preg_replace('/The Timetable of Class Meetings contains.*/', '', $class["prereqs"]);
         $distribs = json_decode($class["distrib"]);
         if ($class["culture"] != "") { $distribs[] = $class["culture"]; }
 
