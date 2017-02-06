@@ -144,6 +144,17 @@
     }
   }
 
+  function isSessionValid($sessid) {
+    $ch = curl_init("https://banner.dartmouth.edu/banner/groucho/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu");
+    curl_setopt($ch, CURLOPT_COOKIE, "SESSID=$sessid" );
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    $output = curl_exec($ch);
+    curl_close($ch);
+
+    return (strpos($output, "A break in attempt has been detected!  Please login again.") === false && strpos($output, "When trying to access secure resources, you will enter your NetID on one page, click Continue") === false && strpos($output, "Click Here for Help With Login") === false);
+  }
+
   function getKeycode($agent) {
     if (stripos($agent, "Mac OS X") !== false) { // it's a mac
         if (stripos($agent, "Chrome") !== false) {

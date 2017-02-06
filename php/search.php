@@ -179,15 +179,10 @@
 
   if (isset($_POST["criteria"])) {
     $sessid = $_POST["sessid"];
+    $classes = null;
 
     if ($sessid) {
       $classes = getClasses($_POST["sessid"]);
-      if ($classes == null) {
-        echo "Sign in again, token no longer valid.";
-        die();
-      }
-    } else {
-      $classes = null;
     }
 
     $matchesInformation = getMatches($_POST["criteria"], $classes);

@@ -1,3 +1,5 @@
+var CLASS_DEBUG_FLAG = false;
+
 // Adds a new row of criteria to the form
 function addCriteria(points) {
   var newRow =  
@@ -73,25 +75,32 @@ function openBanner() {
 
 // Handles formatting the class results
 function formatClasses(classes) {
+  if (!!CLASS_DEBUG_FLAG) {
+    console.log(classes);
+  }
   var classText = '';
-  for (var i = 0; i < classes.length; i++) {
-    var c = classes[i];
-    classText += 
-      '<div class="class">' +
-        '<div class="title"><span>' + c.department + ' ' + c.class + '</span> - ' + c.title + '</div>' + 
-        '<div class="teacher">' + c.teacher + '</div>' + 
-        '<div class="distribs">';
-    for (var j = 0; j < c.distribs.length; j++) {
+  if (classes.length == 0) {
+    classText = '<div class="class text-center">No search results found.</div>';
+  } else {
+    for (var i = 0; i < classes.length; i++) {
+      var c = classes[i];
       classText += 
-          '<span>' + c.distribs[j] + '</span>';
+        '<div class="class">' +
+          '<div class="title"><span>' + c.department + ' ' + c.class + '</span> - ' + c.title + '</div>' + 
+          '<div class="teacher">' + c.teacher + '</div>' + 
+          '<div class="distribs">';
+      for (var j = 0; j < c.distribs.length; j++) {
+        classText += 
+            '<span>' + c.distribs[j] + '</span>';
+      }
+      classText += 
+          '</div>' + 
+          '<div class="prereqs">Prereqs: ' + c.prereqs + '</div>' + 
+          '<div class="description">' + c.description + '</div>' + 
+          '<div class="median length-' + c.median.length + '">' + c.median + '</div>' + 
+          '<div class="period">' + c.period + '</div>' + 
+        '</div>';
     }
-    classText += 
-        '</div>' + 
-        '<div class="prereqs">Prereqs: ' + c.prereqs + '</div>' + 
-        '<div class="description">' + c.description + '</div>' + 
-        '<div class="median length-' + c.median.length + '">' + c.median + '</div>' + 
-        '<div class="period">' + c.period + '</div>' + 
-      '</div>';
   }
   $('#classes').html(classText);
 }
@@ -134,6 +143,34 @@ $(document).ready(function() {
     selection.addRange(range);
   });
 
+  // Handles validation of session ID if pasted
+  var checkingValidity = false;
+  $('input[name="sessid"]').on('input', function(e) {
+    var input = $(this);
+    if (input.val() == "") {
+      input.removeAttr('validity');
+      input[0].setCustomValidity('');
+    } else if (!checkingValidity) {
+      checkingValidity = true;
+      $.post('php/validate.php', {
+        sessid: $(this).val(),
+      }, function(data) {
+        if (!!CLASS_DEBUG_FLAG) {
+          console.log(data);
+        }
+        if (data == 'valid') {
+          input.attr('validity', 'valid');
+          input[0].setCustomValidity('');
+        } else {
+          input.attr('validity', 'invalid');
+          input[0].setCustomValidity('This session token is invalid.  Please retry the steps, and don\'t log into Banner anywhere else.');
+          input[0].reportValidity();
+        }
+        checkingValidity = false;
+      })
+    }
+  });
+
   // Handles submitting the form
   $('form').submit(function(e) {
     e.preventDefault();
@@ -155,7 +192,9 @@ $(document).ready(function() {
       criteria: criteria,
       sessid: $('form input[name="sessid"]').val(),
     }, function(data) {
-      console.log(data);
+      if (!!CLASS_DEBUG_FLAG) {
+        console.log(data);
+      }
       formatClasses(JSON.parse(data));
     });
   });

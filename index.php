@@ -106,7 +106,7 @@
             </ol>
             <div class="form-group">
               <label for="sessid">Session ID (get from above instructions)</label>
-              <input type="text" class="form-control" placeholder="RS2JLz19CpZzQkXcHr==" name="sessid">
+              <input type="text" class="form-control" placeholder="RS2JLz19CpZzQkXcHr==" name="sessid" spellcheck="false">
             </div>
           </div>
           <button type="submit" class="btn btn-primary">Search</button>
