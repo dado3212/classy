@@ -83,11 +83,11 @@
     "9L" => "9L",
     "9S" => "9S",
     "10" => "10",
+    "2" => "2",
+    "2A" => "2A",
     "10A" => "10A",
     "11" => "11",
     "12" => "12",
-    "2" => "2",
-    "2A" => "2A",
     "3A" => "3A",
     "3B" => "3B",
     "6A" => "6A",
@@ -141,6 +141,29 @@
       }
 
       return $classes;
+    }
+  }
+
+  function getKeycode($agent) {
+    if (stripos($agent, "Mac OS X") !== false) { // it's a mac
+        if (stripos($agent, "Chrome") !== false) {
+            return "Cmd+Opt+J";
+        } else if (stripos($agent, "Safari") !== false) {
+            return "Cmd+Opt+C";
+        }
+    }
+    if ( stripos($agent, 'Firefox') !== false ) {
+        return 'firefox';
+    } elseif ( stripos($agent, 'MSIE') !== false ) {
+        return 'ie';
+    } elseif ( stripos($agent, 'iPad') !== false ) {
+        return 'ipad';
+    } elseif ( stripos($agent, 'Android') !== false ) {
+        return 'android';
+    } elseif ( stripos($agent, 'Chrome') !== false ) {
+        return 'chrome';
+    } elseif ( stripos($agent, 'Safari') !== false ) {
+        return 'safari';
     }
   }
 ?>

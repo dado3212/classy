@@ -1,11 +1,13 @@
 <?php
   include_once("php/util.php");
+
+  $keycode = getKeycode($_SERVER["HTTP_USER_AGENT"]);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Find Classes</title>
+    <title>DartClasses</title>
     <?php
       if (preg_match("/(iPhone|iPod|iPad|Android|BlackBerry|Mobile)/i", $_SERVER['HTTP_USER_AGENT'])) {
         ?><meta name="viewport" content="width=500"><?php
@@ -46,52 +48,57 @@
   <body>
     <div class="container">
       <div id="search">
-        <div class="row">
-          <div class="col-lg-12">
-            <h1>DartClasses</h1>
+        <form>
+          <h1>DartClasses</h1>
+
+          <h4>Criteria and Points Explanation</h4>
+          <div>
             <p>
-              You can choose to scrape the classes you've already taken from Dartmouth.  This will prevent it from suggesting classes you've already taken.  The only information it will take is the department, class #, and name of each class you've taken.  <strong>This is optional.</strong>
+              You can build a search by using criteria.  You can add a criteria for the <strong>department</strong>, <strong>distrib</strong>, or <strong>period</strong>.  For each criteria, you can then choose one or more of the choices, and give it a number of points.  Classes that meet elements of each criteria will be given the number of points for that criteria, and the top classes will be returned, sorted by median.  If you're only searching for one criteria, the number of points is irrelevant.
             </p>
+            <p>
+              For example, you have three criteria.  One, for the 'ECON' department, gives 3 points.  The second, for the distrib 'LIT', gives 2 points.  The third, for the time blocks '10' and '11', gives 1 point.  This means that it is most important that the class be in the ECON department, slightly less important that it be a LIT course, and least important that it be a 10 or 11 (but still better than nothing).
+            </p>
+            <p>
+              An ECON class in the 10A block would have 3 points.  A class in the 11 block with the 'LIT' distrib would also have 3 points.  An ECON class in the 10 block with the 'LIT' distrib would have the maximum of 6 points.
+            </p>
+          </div>
+
+          <div id="criteria">
+          </div>
+          <button type="button" onClick="addCriteria()" class="btn btn-secondary">Add Criteria</button>
+
+          <h4>Getting Past Classes</h4>
+          <p>
+            You can choose to scrape the classes you've already taken from Dartmouth.  This will prevent it from suggesting classes you've already taken.  The only information it will take is the department, class #, and name of each class you've taken.
+          </p>
+          <p>
+            <strong>This is optional, and slightly technical.  If you don't feel comfortable with computers, feel free to skip this.</strong>
+          </p>
+          <a href onClick="return toggleBannerText(this);">Show Scraping Steps</a>
+          <div id="scrapingSteps" style="display: none;">
             <ol>
               <li>
                 Click the below code, and copy it.<br>
                 <code id="js">
-                  prompt('Copy to Class Search', document.cookie.split(';')[3].slice(8)); window.close();
+                  prompt('Copy to DartClasses', document.cookie.split(';')[3].slice(8)); window.close();
                 </code>
               </li>
               <li>
                 Click the following link, and log into Banner:  <strong><a href="javaScript:void(0);" onClick="openBanner()">Log In</a></strong>
               </li>
               <li>
-                Open the DevTools, and run the code you copied in step 1.  (Ctrl+Shift+I, or F12).  It will pop up a window with text selected.  Copy that new text and hit 'Enter'.
+                Open the Developer view by pressing <code><?php echo $keycode; ?></code>, paste the code you copied in step 1 into the new tab, and hit 'Enter'.  (It will pop up a window with text selected.  Copy that <i>new</i> text and hit 'Enter').
               </li>
               <li>
-                Paste into the Session ID input.
+                Paste the newly copied text into the Session ID input.
               </li>
             </ol>
-          </div>
-        </div>
-        <form>
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="sessid">Session ID (get from above instructions)</label>
-                <input type="text" class="form-control" placeholder="RS2JLz19CpZzQkXcHr==" name="sessid">
-              </div>
+            <div class="form-group">
+              <label for="sessid">Session ID (get from above instructions)</label>
+              <input type="text" class="form-control" placeholder="RS2JLz19CpZzQkXcHr==" name="sessid">
             </div>
           </div>
-
-          <div class="row">
-            <div class="col-lg-12">
-              <p>
-                You can build a search by using criteria.  You can add a criteria for the <strong>department</strong>, <strong>distrib</strong>, or <strong>period</strong>.  For each criteria, you can then choose one or more of the associated values, and give it a number of points.  Classes that meet elements of each criteria will be given that number of points, and the top classes will be returned, sorted by median.
-              </p>
-            </div>
-          </div>
-
-          <div id="criteria">
-          </div>
-          <button type="button" onClick="addCriteria()" class="btn btn-secondary">Add Criteria</button>
           <button type="submit" class="btn btn-primary">Search</button>
         </form>
       </div>

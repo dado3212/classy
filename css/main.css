@@ -16,7 +16,7 @@ body {
 #search {
   background-color: #393939;
   color: white;
-  padding: 0 20px 20px 20px;
+  padding: 1px 20px 20px 20px;
   margin-bottom: 20px;
 }
 
@@ -57,6 +57,16 @@ body {
   fill: white;
 }
 
+.btn-primary {
+  background-color: hsl(106, 100%, 42%);
+  border: 1px solid hsl(106, 100%, 38%);
+
+  min-width: 100px;
+  margin: 10px auto 0 auto;
+  display: block;
+  padding: 6px 10px;
+}
+
 /* Footer */
 html {
   position: relative;
@@ -94,19 +104,16 @@ a:hover, a:focus {
   text-decoration: none;
 }
 
-.btn-primary {
-  background-color: hsl(106, 100%, 42%);
-  border: 1px solid hsl(106, 100%, 35%);
-}
-
 code {
   color: hsl(106, 100%, 42%);
   background-color: #5f5f5f;
   padding: 5px 10px;
   border-radius: 3px;
+  display: inline-block;
+}
+
+code#js {
   margin: 5px 0;
-  text-align: center;
-  display: block;
 }
 
 /* Search result */
@@ -166,7 +173,7 @@ code {
 .period, .median {
   position: absolute;
   top: 10px;
-  right: 16px;
+  right: 12px;
   text-align: center;
   background-color: hsla(106, 100%, 42%, 0.95);
   width: 46px;
@@ -179,7 +186,7 @@ code {
 
 .median {
   background-color: hsla(106, 100%, 33%, 0.95);
-  top: 43px;
+  top: 40px;
   right: 39px;
 }
  

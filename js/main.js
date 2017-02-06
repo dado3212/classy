@@ -1,5 +1,5 @@
 // Adds a new row of criteria to the form
-function addCriteria() {
+function addCriteria(points) {
   var newRow =  
     '<div class="row criteria">' + 
       '<div class="col-md-3">' + 
@@ -15,7 +15,7 @@ function addCriteria() {
       '<div class="col-md-6">' + 
         '<div class="form-group">' + 
           '<label>Choices</label>' + 
-          '<select name="choices" class="form-control" multiple required>' + 
+          '<select name="choices" class="form-control" multiple required data-placeholder="Select Some Choices">' + 
             '<optgroup disabled hidden></optgroup>' + 
             departmentOptions + 
           '</select>' + 
@@ -24,7 +24,7 @@ function addCriteria() {
       '<div class="col-md-2">' + 
         '<div class="form-group">' + 
           '<label>Points</label>' + 
-          '<input name="weight" class="form-control" type="number" min="0" placeholder="Any number" required>' + 
+          '<input name="weight" class="form-control" type="number" min="1" placeholder="Any number" required' + (points ? ' value="' + points + '"' : '') + '>' + 
         '</div>' + 
       '</div>' + 
       '<div class="col-md-1">' + 
@@ -64,7 +64,7 @@ function addCriteria() {
 
 // Opens banner (maybe could be leveraged to run some code)
 function openBanner() {
-  var banner = window.open('//banner.dartmouth.edu/banner/groucho/twbkwbis.P_GenMenu?name=bmenu.Z_UGSMainMenu','_blank');
+  var banner = window.open('//dartmouth.edu/bannerstudent','_blank');
   return false;
 }
 
@@ -94,6 +94,17 @@ function formatClasses(classes) {
   $('#classes').html(classText);
 }
 
+function toggleBannerText(self) {
+  if ($(self).html() == 'Show Scraping Steps') {
+    $(self).html('Hide Scraping Steps');
+    $('#scrapingSteps').slideDown(200);
+  } else {
+    $(self).html('Show Scraping Steps');
+    $('#scrapingSteps').slideUp(200);
+  }
+  return false;
+}
+
 $(document).ready(function() {
   // Handle Chosen.js override to support 'required' (adapted from github issue: https://github.com/harvesthq/chosen/issues/515#issuecomment-104602031)
   $.fn.oldChosen = $.fn.chosen;
@@ -109,7 +120,7 @@ $(document).ready(function() {
   };
 
   // Start off with a criteria
-  addCriteria();
+  addCriteria(1);
 
   // Handles click to select on the javascript code
   $('code#js').on('click', function() {
