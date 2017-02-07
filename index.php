@@ -2,17 +2,56 @@
   include_once("php/util.php");
 
   $keycode = getKeycode($_SERVER["HTTP_USER_AGENT"]);
-
-  $siteName = (isset($_GET["lit"]) ? "I Eat Class" : "DartClasses");
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title><?php echo $siteName; ?></title>
+    <title>Classy</title>
+
+    <!-- Meta tags -->
+    <meta name="robots" content="index, follow, archive">
+    <meta name="description" content="Easily search by department, distribs, periods, and medians to find the perfect class.">
+    <meta charset="utf-8" />
+    <meta http-equiv="Cache-control" content="public">
+    <!-- old -->
+    <meta name="google-site-verification" content="9U8kYC24rUGX98pnl1EDy0A4tY4EE8DxFAvpPwNNAEs" />
+    <!-- new -->
+    <meta name="google-site-verification" content="SmeVIjL9gg0LUuOrJ-ozBhozzBg0ZpmSZ_u86do4Y7U" />
+
+    <!-- Semantic Markup -->
+    <meta property="og:title" content="Classy">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://alexbeals.com/projects/classes/images/header_dark.jpg">
+    <meta property="og:url" content="https://alexbeals.com/projects/classes">
+    <meta property="og:description" content="Easily search by department, distribs, periods, and medians to find the perfect class.">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:creator" content="@alex_beals">
+
+    <!-- Google Analytics -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-70745807-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="images/favicons/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="images/favicons/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="images/favicons/manifest.json">
+    <link rel="mask-icon" href="images/favicons/safari-pinned-tab.svg" color="#222222">
+    <link rel="shortcut icon" href="images/favicons/favicon.ico">
+    <meta name="msapplication-config" content="images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
     <?php
       if (preg_match("/(iPhone|iPod|iPad|Android|BlackBerry|Mobile)/i", $_SERVER['HTTP_USER_AGENT'])) {
-        ?><meta name="viewport" content="width=500"><?php
+        ?><meta name="viewport" content="width=570"><?php
       }
     ?>
     <script>
@@ -57,10 +96,10 @@
     <div class="container">
       <div id="search">
         <form>
-          <h1><?php echo $siteName; ?></h1>
+          <img class="header" src="images/header.png" alt="Logo">
 
           <p class="overview">
-            DartClasses is a way of searching for classes based on departments, distribs, periods, and medians.  It allows you to find the best fits for <i>you</i> based on your priorities in a course.
+            Classy is a way of searching for classes based on departments, distribs, periods, and medians.  It allows you to find the best fits for <i>you</i> based on your priorities in a course.
           </p>
 
           <h4>Criteria and Points Explanation</h4>
@@ -69,26 +108,23 @@
               You can build a search by using criteria.  You can add a criteria for the <strong>department</strong>, <strong>distrib</strong>, <strong>period</strong>, or <strong>median</strong>.  For each criteria, you can then choose one or more of the choices, and give it a number of points.  Classes that meet elements of each criteria will be given the number of points for that criteria, and the top classes will be returned, sorted by median.  If you're only searching for one criteria, the number of points is irrelevant.
             </p>
             <p>
-              For example, you have three criteria.  The first, for the ECON department, gives 3 points.  The second, for the distrib 'LIT', gives 2 points.  The third, for the time blocks '10' and '11', gives 1 point.  This means that it is most important that the class be in the ECON department, slightly less important that it be a LIT course, and least important that it be a 10 or 11 (but still better than nothing).
-            </p>
-            <p>
-              An ECON class in the 10A block would have 3 points.  A class in the 11 block with the 'LIT' distrib would also have 3 points.  An ECON class in the 10 block with the 'LIT' distrib would have the maximum of 6 points.
+              A sample search is displayed below, with an ECON class being most important (3 points), the 'LIT' distrib being second most important (2 points), and the time blocks '10' and '11' least important (1 point).
             </p>
           </div>
 
-          <div id="criteria">
+          <div id="criteria" class="row">
           </div>
-          <button type="button" onClick="addCriteria()" class="btn btn-secondary">Add New Criteria</button>
+          <button type="button" onClick="addCriteria()" class="btn btn-secondary add">Add New Criteria</button>
 
-          <h4>Getting Past Classes</h4>
+          <h4>Filtering Past Classes</h4>
           <p>
-            You can choose to scrape the classes you've already taken from Dartmouth.  This will prevent it from suggesting classes you've already taken.  The only information it will take is the department, class #, and name of each class you've taken.
-          </p>
-          <p>
-            <strong>This is optional, and slightly technical.  If you don't feel comfortable with computers, feel free to skip this.  Additionally, this is <i>not</i> possible on mobile.</strong>
+            This is optional, and slightly technical.  If you don't feel comfortable with computers, feel free to skip this.  <strong>Additionally, this is <i>not</i> possible on mobile.</strong>
           </p>
           <a href onClick="return toggleBannerText(this);">Show Scraping Steps</a>
           <div id="scrapingSteps" style="display: none;">
+            <p>
+              You can choose to scrape the classes you've already taken from Dartmouth.  This will prevent it from suggesting classes you've already taken.  The only information it will take is the department, class #, and name of each class you've taken.
+            </p>
             <ol>
               <li>
                 Click the below code, and copy it.<br>
@@ -111,7 +147,7 @@
               <input type="text" class="form-control" placeholder="RS2JLz19CpZzQkXcHr==" name="sessid" spellcheck="false">
             </div>
           </div>
-          <button type="submit" class="btn btn-primary">Search</button>
+          <button type="submit" class="btn btn-primary search">Search</button>
         </form>
       </div>
 
