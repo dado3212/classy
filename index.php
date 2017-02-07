@@ -146,6 +146,7 @@
     <footer>
       <p>
         Made by <a href="//alexbeals.com">Alex Beals</a> '18.
+        <!-- Source code: https://github.com/dado3212/classy -->
       </p>
     </footer>
   </body>
