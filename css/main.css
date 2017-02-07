@@ -282,16 +282,6 @@ code#js {
   text-align: center;
 }
 
-input[validity="valid"] {
-  border: 1px solid hsl(106, 100%, 42%) !important;
-  box-shadow: 0 0 6px hsl(106, 100%, 25%) !important;
-}
-
-input[validity="invalid"] {
-  border: 1px solid hsl(346, 100%, 42%) !important;
-  box-shadow: 0 0 6px hsl(346, 100%, 25%) !important;
-}
-
 @media (max-width: 991px) {
   label.empty {
     height: 0px;

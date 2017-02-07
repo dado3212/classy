@@ -178,11 +178,10 @@
   }
 
   if (isset($_POST["criteria"])) {
-    $sessid = $_POST["sessid"];
     $classes = null;
 
-    if ($sessid) {
-      $classes = getClasses($_POST["sessid"]);
+    if ($_POST["classText"]) {
+      $classes = getClassesFromString($_POST["classText"]);
     }
 
     $matchesInformation = getMatches($_POST["criteria"], $classes);

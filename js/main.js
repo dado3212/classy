@@ -165,40 +165,12 @@ $(document).ready(function() {
     selection.addRange(range);
   });
 
-  // Handles validation of session ID if pasted
-  var checkingValidity = false;
-  $('input[name="sessid"]').on('input', function(e) {
-    var input = $(this);
-    if (input.val() == "") {
-      input.removeAttr('validity');
-      input[0].setCustomValidity('');
-    } else if (!checkingValidity) {
-      checkingValidity = true;
-      $.post('php/validate.php', {
-        sessid: $(this).val(),
-      }, function(data) {
-        if (!!CLASS_DEBUG_FLAG) {
-          console.log(data);
-        }
-        if (data == 'valid') {
-          input.attr('validity', 'valid');
-          input[0].setCustomValidity('');
-        } else {
-          input.attr('validity', 'invalid');
-          input[0].setCustomValidity('This session token is invalid.  Please retry the steps.  If you don\'t want to use this option, just delete all text in the input.');
-          input[0].reportValidity();
-        }
-        checkingValidity = false;
-      })
-    }
-  });
-
   // Handles submitting the form
   $('form').submit(function(e) {
     e.preventDefault();
 
     var criteria = [];
-    var rawCriteria = $('.row.criteria');
+    var rawCriteria = $('.criteria');
 
     for (var i = 0; i < rawCriteria.length; i++) {
       criteria.push({
@@ -212,7 +184,7 @@ $(document).ready(function() {
 
     $.post('php/search.php', {
       criteria: criteria,
-      sessid: $('form input[name="sessid"]').val(),
+      classText: $('form textarea[name="classText"]').val(),
     }, function(data) {
       if (!!CLASS_DEBUG_FLAG) {
         console.log(data);

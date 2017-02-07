@@ -110,71 +110,24 @@
     "C" =>      0,
   ];
 
-  function getClasses($sessid) {
-    $ch = curl_init("https://banner.dartmouth.edu/banner/groucho/bwskotrn.P_ViewTran");
-    curl_setopt($ch, CURLOPT_COOKIE, "SESSID=$sessid" );
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_REFERER, "https://banner.dartmouth.edu/banner/groucho/bwskotrn.P_ViewTermTran");
-    curl_setopt($ch, CURLOPT_POSTFIELDS, "levl=&tprt=GRUN");
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-    $output = curl_exec($ch);
-    curl_close($ch);
+  function getClassesFromString($string) {
+    preg_match_all("/Subject.*?Grade[\s]*R\n((.+?)[\s]*(\d+).*\n)*/", $string, $sections);
 
-    if (strpos($output, "A break in attempt has been detected!  Please login again.") !== false) {
-      return null;
-    } else {
-      $classes = [];
-
-      preg_match_all("/<th CLASS=\"ddheader\" scope=\"col\" >Subject<\/th>[\s\S]*?<tr>\n<th/", $output, $matches);
-
-      foreach ($matches[0] as $group) {
-        preg_match_all("/<tr>\n<td CLASS=\"dddefault\">(.*?)<\/td>\n<td.*?>(.*?)<\/td>\n(?:<td class=\"dddefault\">UG<\/td>\n)*<td.*?colspan.*?>(.*?)<\/td>/i", $group, $rawClasses);
-
-        for ($i = 0; $i < count($rawClasses[0]); $i++) {
-          $classes[] = [
-            "department" => $rawClasses[1][$i],
-            "number" => $rawClasses[2][$i],
-            "title" => $rawClasses[3][$i],
-          ];
+    $classes = [];
+    foreach ($sections[0] as $section) {
+        $rawClasses = explode("\n", $section);
+        if (count($rawClasses) > 1) {
+            foreach ($rawClasses as $rawClass) {
+                preg_match("/(.*?)[\s]*(\d+).*/", $rawClass, $classMatch);
+                if (count($classMatch) == 3) {
+                    $classes[] = [
+                        "department" => $classMatch[1],
+                        "number" => $classMatch[2],
+                    ];
+                }
+            }
         }
-      }
-
-      return $classes;
     }
-  }
-
-  function isSessionValid($sessid) {
-    $ch = curl_init("https://banner.dartmouth.edu/banner/groucho/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu");
-    curl_setopt($ch, CURLOPT_COOKIE, "SESSID=$sessid" );
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-    $output = curl_exec($ch);
-    curl_close($ch);
-
-    return (strpos($output, "A break in attempt has been detected!  Please login again.") === false && strpos($output, "When trying to access secure resources, you will enter your NetID on one page, click Continue") === false && strpos($output, "Click Here for Help With Login") === false);
-  }
-
-  function getKeycode($agent) {
-    if (stripos($agent, "Mac OS X") !== false) { // it's a mac
-        if (stripos($agent, "Chrome") !== false) {
-            return "Cmd+Opt+J";
-        } else if (stripos($agent, "Safari") !== false) {
-            return "Cmd+Opt+C";
-        }
-    } // need to finish testing
-    // if ( stripos($agent, 'Firefox') !== false ) {
-    //     return 'firefox';
-    // } elseif ( stripos($agent, 'MSIE') !== false ) {
-    //     return 'ie';
-    // } elseif ( stripos($agent, 'iPad') !== false ) {
-    //     return 'ipad';
-    // } elseif ( stripos($agent, 'Android') !== false ) {
-    //     return 'android';
-    // } elseif ( stripos($agent, 'Chrome') !== false ) {
-    //     return 'chrome';
-    // } elseif ( stripos($agent, 'Safari') !== false ) {
-    //     return 'safari';
-    // }
+    return $classes;
   }
 ?>

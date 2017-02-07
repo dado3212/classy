@@ -1,7 +1,5 @@
 <?php
   include_once("php/util.php");
-
-  $keycode = getKeycode($_SERVER["HTTP_USER_AGENT"]);
 ?>
 
 <!DOCTYPE html>
@@ -118,33 +116,24 @@
 
           <h4>Filtering Past Classes</h4>
           <p>
-            This is optional, and slightly technical.  If you don't feel comfortable with computers, feel free to skip this.  <strong>Additionally, this is <i>not</i> possible on mobile.</strong>
+             You can choose to filter out your past classes by copying and pasting your unofficial transcript.  The only information it will take is the department and class # for each class you've taken, and none of the information will be stored or saved.  <strong>This is optional.</strong>
           </p>
           <a href onClick="return toggleBannerText(this);">Show Scraping Steps</a>
           <div id="scrapingSteps" style="display: none;">
-            <p>
-              You can choose to scrape the classes you've already taken from Dartmouth.  This will prevent it from suggesting classes you've already taken.  The only information it will take is the department, class #, and name of each class you've taken.
-            </p>
             <ol>
-              <li>
-                Click the below code, and copy it.<br>
-                <code id="js">
-                  prompt('Copy to DartClasses', document.cookie.split(';')[3].slice(8)); window.close();
-                </code>
-              </li>
               <li>
                 Click the following link, and log into Banner:  <strong><a href="javaScript:void(0);" onClick="openBanner()">Log In</a></strong>
               </li>
               <li>
-                Open the Developer view by pressing <code><?php echo $keycode; ?></code>, paste the code you copied in step 1 into the new tab, and hit 'Enter'.  (It will pop up a window with text selected.  Copy that <i>new</i> text and hit 'Enter').
+                Navigate to 'Unofficial Transcript - Web version', and click 'Submit' to pull up your full unofficial transcript.  Select+All to select the entire page, and then copy it.
               </li>
               <li>
-                Paste the newly copied text into the Session ID input.
+                Paste the newly copied text into the 'Raw Transcript' textbox.
               </li>
             </ol>
             <div class="form-group">
-              <label for="sessid">Session ID (get from above instructions)</label>
-              <input type="text" class="form-control" placeholder="RS2JLz19CpZzQkXcHr==" name="sessid" spellcheck="false">
+              <label for="classText">Raw Transcript (get from above instructions)</label>
+              <textarea class="form-control" rows="5" name="classText" spellcheck="false"></textarea>
             </div>
           </div>
           <button type="submit" class="btn btn-primary search">Search</button>
