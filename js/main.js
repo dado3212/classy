@@ -123,6 +123,8 @@ function updateQuery() {
 
   if (string != "") {
     history.replaceState({}, "Classy", string);
+  } else {
+    history.replaceState({}, "Classy", "./");
   }
 }
 
