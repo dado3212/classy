@@ -111,10 +111,10 @@
       var periodOptions = "<?php echo $periodOptions; ?>";
       var medianOptions = "<?php echo $medianOptions; ?>";
 
-      var departments = <?php echo json_encode($departments); ?>;
-      var distributives = <?php echo json_encode($distribs); ?>;
-      var periods = <?php echo json_encode($periods); ?>;
-      var medians = <?php echo json_encode($medians); ?>;
+      var departments = <?php echo json_encode(array_map("strval", array_keys($departments))); ?>;
+      var distributives = <?php echo json_encode(array_map("strval", array_keys($distribs))); ?>;
+      var periods = <?php echo json_encode(array_map("strval", array_keys($periods))); ?>;
+      var medians = <?php echo json_encode(array_map("strval", array_keys($medians))); ?>;
     </script>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
@@ -151,7 +151,7 @@
 
           <div id="criteria" class="row">
           </div>
-          <button type="button" onClick="addCriteria()" class="btn btn-secondary add">Add New Criteria</button>
+          <button type="button" onClick="addCriteria(); updateQuery();" class="btn btn-secondary add">Add New Criteria</button>
 
           <h4>Filtering Past Classes</h4>
           <p>

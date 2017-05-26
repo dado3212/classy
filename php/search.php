@@ -64,7 +64,8 @@
       ON timetable.department = medians.department AND timetable.`number` = medians.`number`
       LEFT JOIN orc
       ON timetable.department = orc.department AND timetable.`number` = orc.`number`
-      WHERE timetable.term = '$term' AND timetable.`number` < 100");
+      WHERE timetable.term = '$term' AND timetable.`number` < 100 AND timetable.period != 'FS' AND timetable.period != 'LS'");
+    // (Remove FSP's and LSA's)
     $stmt->execute();
 
     $rawClasses = $stmt->fetchAll(PDO::FETCH_ASSOC);

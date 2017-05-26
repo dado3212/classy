@@ -198,13 +198,13 @@ $(document).ready(function() {
     var choices = [];
     for (var j = 0; j < criteria[i].choices.length; j++) {
       if (type == 'departments') {
-        choices.push(Object.keys(departments)[criteria[i].choices[j]]);
+        choices.push(departments[criteria[i].choices[j]]);
       } else if (type == 'distributives') {
-        choices.push(Object.keys(distributives)[criteria[i].choices[j]]);
+        choices.push(distributives[criteria[i].choices[j]]);
       } else if (type == 'periods') {
-        choices.push(Object.keys(periods)[criteria[i].choices[j]]);
+        choices.push(periods[criteria[i].choices[j]]);
       } else if (type == 'medians') {
-        choices.push(Object.keys(medians)[criteria[i].choices[j]]);
+        choices.push(medians[criteria[i].choices[j]]);
       }
     }
 
