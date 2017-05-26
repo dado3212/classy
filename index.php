@@ -54,6 +54,36 @@
     ?>
     <script>
       <?php
+        // Pull in criteria from live-updating URL
+        $criteria = [];
+        // Check that the query parameters are in the right form
+        if (
+          isset($_GET['t']) && isset($_GET['c']) && isset($_GET['p']) && // exist
+          (count($_GET['t']) == count($_GET['c']) && count($_GET['c']) == count($_GET['p'])) // same length
+        ) {
+          for ($i = 0; $i < count($_GET['t']); $i++) {
+            $c = [];
+            $c['type'] = $_GET['t'][$i];
+            $c['choices'] = explode(",", $_GET['c'][$i]);
+            $c['points'] = $_GET['p'][$i];
+
+            // Convert to numeric for choices
+            for ($j = 0; $j < count($c['choices']); $j++) {
+              if (!is_numeric($c['choices'][$j])) {
+                break;
+              }
+              $c['choices'][$j] = (int)$c['choices'][$j];
+            }
+
+            // Conver to numeric for type, points
+            if (is_numeric($c['type']) && is_numeric($c['points'])) {
+              $c['type'] = (int)$c['type'];
+              $c['points'] = (int)$c['points'];
+              $criteria[] = $c;
+            }
+          }
+        }
+
         $departmentOptions = "<optgroup disabled hidden></optgroup>";
         foreach ($departments as $code => $name) {
           $departmentOptions .= "<option value='$code'>$name ($code)</option>";
@@ -71,13 +101,20 @@
 
         $medianOptions = "<optgroup disabled hidden></optgroup>";
         foreach ($medians as $code => $value) {
-          $medianOptions .= "<option vallue='$code'>$code</option>";
+          $medianOptions .= "<option value='$code'>$code</option>";
         }
       ?>
+      var criteria = <?php echo json_encode($criteria); ?>;
+
       var departmentOptions = "<?php echo $departmentOptions; ?>;";
       var distributiveOptions = "<?php echo $distributiveOptions; ?>;";
       var periodOptions = "<?php echo $periodOptions; ?>";
       var medianOptions = "<?php echo $medianOptions; ?>";
+
+      var departments = <?php echo json_encode($departments); ?>;
+      var distributives = <?php echo json_encode($distribs); ?>;
+      var periods = <?php echo json_encode($periods); ?>;
+      var medians = <?php echo json_encode($medians); ?>;
     </script>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
@@ -105,9 +142,11 @@
             <p>
               You can build a search by using criteria.  You can add a criteria for the <strong>department</strong>, <strong>distrib</strong>, <strong>period</strong>, or <strong>median</strong>.  For each criteria, you can then choose one or more of the choices, and give it a number of points.  Classes that meet elements of each criteria will be given the number of points for that criteria, and the top classes will be returned, sorted by median.  If you're only searching for one criteria, the number of points is irrelevant.
             </p>
+            <?php if (count($criteria) == 0) { ?>
             <p>
               A sample search is displayed below, with an ECON class being most important (3 points), the 'LIT' distrib being second most important (2 points), and the time blocks '10' and '11' least important (1 point).
             </p>
+            <?php } ?>
           </div>
 
           <div id="criteria" class="row">

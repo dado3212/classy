@@ -34,7 +34,7 @@ function addCriteria(type, vals, points) {
       '<div class="col-md-2">' + 
         '<div class="form-group">' + 
           '<label>Points</label>' + 
-          '<input name="weight" class="form-control" type="number" min="1" placeholder="Any number" required>' + 
+          '<input name="weight" class="form-control" type="number" placeholder="Any number" required>' + 
         '</div>' + 
       '</div>' + 
       '<div class="col-md-1">' + 
@@ -79,12 +79,51 @@ function addCriteria(type, vals, points) {
       $(rowElem).find('select[name^="choices"]').html($.parseHTML(medianOptions));
     }
     $(rowElem).find('select[name^="choices"]').trigger('chosen:updated');
+
+    updateQuery(); // Update query on type change
+  });
+
+  // Add listeners to update the query parameter
+  $(rowElem).find('select[name="choices"]').on('change', function() {
+    updateQuery();
+  });
+
+  $(rowElem).find('input[name="weight"]').on('change', function() {
+    updateQuery();
   });
 
   // Add a listener to delete the row
   $(rowElem).find('button').on('click', function() {
     $(rowElem).remove();
+    updateQuery(); // Updates query on delete
   });
+}
+
+function updateQuery() {
+  var criteria = $('div.criteria');
+
+  var string = "";
+
+  for (var i = 0; i < criteria.length; i++) {
+    // Type
+    var t = $($('div.criteria')[i]).find('select[name="type"]')[0].options.selectedIndex;
+
+    // Choices
+    var c = [];
+    var selected = $($('div.criteria')[i]).find('select[name="choices"]')[0].selectedOptions;
+    for (var j = 0; j < selected.length; j++) {
+      c.push(selected[j].index);
+    }
+
+    // Points
+    var p = $($('div.criteria')[i]).find('input[name="weight"]')[0].value;
+
+    string += (string == "" ? "?" : "&") + "t[]=" + t + "&c[]=" + c.join() + "&p[]=" + p;
+  }
+
+  if (string != "") {
+    history.replaceState({}, "Classy", string);
+  }
 }
 
 // Opens banner (maybe could be leveraged to run some code)
@@ -150,20 +189,32 @@ $(document).ready(function() {
     return ret;
   };
 
-  // Start off with default criteria
-  addCriteria('departments', ['ECON'], 3);
-  addCriteria('distributives', ['LIT'], 2);
-  addCriteria('periods', ['10','11'], 1);
+  for (var i = 0; i < criteria.length; i++) {
+    var types = ['departments', 'distributives', 'periods', 'medians'];
+    var type = types[criteria[i].type];
 
-  // Handles click to select on the javascript code
-  $('code#js').on('click', function() {
-    var range = document.createRange();
-    var selection = window.getSelection();
-    range.selectNodeContents($(this)[0]);
+    var choices = [];
+    for (var j = 0; j < criteria[i].choices.length; j++) {
+      if (type == 'departments') {
+        choices.push(Object.keys(departments)[criteria[i].choices[j]]);
+      } else if (type == 'distributives') {
+        choices.push(Object.keys(distributives)[criteria[i].choices[j]]);
+      } else if (type == 'periods') {
+        choices.push(Object.keys(periods)[criteria[i].choices[j]]);
+      } else if (type == 'medians') {
+        choices.push(Object.keys(medians)[criteria[i].choices[j]]);
+      }
+    }
 
-    selection.removeAllRanges();
-    selection.addRange(range);
-  });
+    addCriteria(type, choices, criteria[i].points);
+  }
+
+  // Default criteria
+  if (criteria.length == 0) {
+    addCriteria('departments', ['ECON'], 3);
+    addCriteria('distributives', ['LIT'], 2);
+    addCriteria('periods', ['10','11'], 1);
+  }
 
   // Handles submitting the form
   $('form').submit(function(e) {

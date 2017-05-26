@@ -115,18 +115,18 @@
 
     $classes = [];
     foreach ($sections[0] as $section) {
-        $rawClasses = explode("\n", $section);
-        if (count($rawClasses) > 1) {
-            foreach ($rawClasses as $rawClass) {
-                preg_match("/(.*?)[\s]*(\d+).*/", $rawClass, $classMatch);
-                if (count($classMatch) == 3) {
-                    $classes[] = [
-                        "department" => $classMatch[1],
-                        "number" => $classMatch[2],
-                    ];
-                }
-            }
+      $rawClasses = explode("\n", $section);
+      if (count($rawClasses) > 1) {
+        foreach ($rawClasses as $rawClass) {
+          preg_match("/(.*?)[\s]*(\d+).*/", $rawClass, $classMatch);
+          if (count($classMatch) == 3) {
+            $classes[] = [
+              "department" => $classMatch[1],
+              "number" => $classMatch[2],
+            ];
+          }
         }
+      }
     }
     return $classes;
   }

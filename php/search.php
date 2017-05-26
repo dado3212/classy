@@ -7,7 +7,7 @@
 
   $PDO = createConnection();
 
-  $term = "17S";
+  $term = "17F";
 
   function canTake($class, $allClasses) {
     if ($allClasses == null) return true; // handle if session token not passed
