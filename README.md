@@ -29,7 +29,7 @@ The project relies on various scrapers to create a MySQL database that is querie
     <b>scrape_timetable.py</b> - This Python script needs some minor modifications to be run.  Simply edit the last line to have the function call the proper term identifiers.  "201703", "17S" is the 2017 Spring term, "201706, "17X" will be the summer, etc.  This will generate a file 'scrapeClass_201701.csv'.
   </li>
   <li>
-    <b>scrape_medians.py</b> - This Python script was adapted from [mattgmarcus](https://github.com/mattgmarcus/Median-Town/blob/master/scripts/medians.py)'s file, who developed Median-Town.  It can just be run with no parameters, and will generate a file 'medians.csv' which contains the averaged median for each class that it found from the data from 09W up to the present (it calculates the current year).
+  <b>scrape_medians.py</b> - This Python script was adapted from <a href="https://github.com/mattgmarcus/Median-Town/blob/master/scripts/medians.py">mattgmarcus</a>'s file, who developed Median-Town.  It can just be run with no parameters, and will generate a file 'medians.csv' which contains the averaged median for each class that it found from the data from 09W up to the present (it calculates the current year).
   </li>
 </ul>
 
