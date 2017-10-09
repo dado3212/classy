@@ -110,6 +110,13 @@
     "C" =>      0,
   ];
 
+  $terms = [
+    "16S",
+    "16W",
+    "17S",
+    "17F",
+  ];
+
   function getClassesFromString($string) {
     preg_match_all("/Subject.*?Grade[\s]*R\n((.+?)[\s]*(\d+).*\n)*/", $string, $sections);
 

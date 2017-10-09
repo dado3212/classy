@@ -7,8 +7,6 @@
 
   $PDO = createConnection();
 
-  $term = "17F";
-
   function canTake($class, $allClasses) {
     if ($allClasses == null) return true; // handle if session token not passed
 
@@ -20,9 +18,8 @@
     return true;
   }
 
-  function getMatches($criteria, $classes) {
+  function getMatches($term, $criteria, $classes) {
     global $PDO;
-    global $term;
 
     // Get all the criteria properly sorted (indiscriminate of weight)
     $allDepts = [];
@@ -64,7 +61,8 @@
       ON timetable.department = medians.department AND timetable.`number` = medians.`number`
       LEFT JOIN orc
       ON timetable.department = orc.department AND timetable.`number` = orc.`number`
-      WHERE timetable.term = '$term' AND timetable.`number` < 100 AND timetable.period != 'FS' AND timetable.period != 'LS'");
+      WHERE timetable.term = :term AND timetable.`number` < 100 AND timetable.period != 'FS' AND timetable.period != 'LS'");
+    $stmt->bindValue(":term", $term, PDO::PARAM_STR);
     // (Remove FSP's and LSA's)
     $stmt->execute();
 
@@ -178,14 +176,14 @@
     return $results;
   }
 
-  if (isset($_POST["criteria"])) {
+  if (isset($_POST["criteria"]) && isset($_POST["term"])) {
     $classes = null;
 
     if ($_POST["classText"]) {
       $classes = getClassesFromString($_POST["classText"]);
     }
 
-    $matchesInformation = getMatches($_POST["criteria"], $classes);
+    $matchesInformation = getMatches($_POST["term"], $_POST["criteria"], $classes);
     echo json_encode(mainClasses($matchesInformation));
   }
 ?>

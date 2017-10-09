@@ -2,7 +2,7 @@ var CLASS_DEBUG_FLAG = false;
 
 // Adds a new row of criteria to the form
 function addCriteria(type, vals, points) {
-  var newRow =  
+  var newRow =
     '<div class="criteria col-xs-6 col-md-12">' + 
       '<div class="col-md-3">' + 
         '<div class="form-group">' + 
@@ -236,8 +236,9 @@ $(document).ready(function() {
     $('#classes').html('');
 
     $.post('php/search.php', {
-      criteria: criteria,
       classText: $('form textarea[name="classText"]').val(),
+      criteria: criteria,
+      term: $('form select[name="term"]').val(),
     }, function(data) {
       if (!!CLASS_DEBUG_FLAG) {
         console.log(data);
