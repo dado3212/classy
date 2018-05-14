@@ -111,10 +111,12 @@
   ];
 
   $terms = [
-    "16S",
-    "16W",
-    "17S",
+    "18S",
+    "18W",
     "17F",
+    "17S",
+    "16W",
+    "16S",
   ];
 
   function getClassesFromString($string) {

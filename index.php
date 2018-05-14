@@ -142,14 +142,14 @@
             <p>
               You can build a search by using criteria.  You can add a criteria for the <strong>department</strong>, <strong>distrib</strong>, <strong>period</strong>, or <strong>median</strong>.  For each criteria, you can then choose one or more of the choices, and give it a number of points.  Classes that meet elements of each criteria will be given the number of points for that criteria, and the top classes will be returned, sorted by median.  If you're only searching for one criteria, the number of points is irrelevant.
             </p>
-            <div class="criteria col-xs-6 col-md-12">
+            <div class="col-xs-6 col-md-12">
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Term</label>
                   <select name="term" class="form-control" required>
                     <?php
                       for ($i = 0; $i < count($terms); $i++) {
-                        echo "<option value='$terms[$i]'" . ($i == count($terms) - 1 ? " selected" : "") . ">$terms[$i]</option>";
+                        echo "<option value='$terms[$i]'" . ($i == 0 ? " selected" : "") . ">$terms[$i]</option>";
                       }
                     ?>
                   </select>
