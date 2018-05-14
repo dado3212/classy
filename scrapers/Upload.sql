@@ -1,12 +1,12 @@
 -- Load Timetable information resulting from scrape_timetable.py 
-LOAD DATA LOCAL INFILE 'D:\\Alex\\Desktop\\Projects\\Academic Timetable Redesign\\scrapeClasses_201703.csv'
+LOAD DATA LOCAL INFILE 'D:\\Alex\\Desktop\\Projects\\classy\\scrapers\\scrapeClasses_201809.csv'
 INTO TABLE `classes`.`timetable`
 FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\r\n'
 (department, `number`, fys, title, description, crosslisted, period, room, building, teacher, culture, distrib, `limit`, term);
 
 -- Check that it worked :D
-SELECT * FROM classes.timetable WHERE term = "17S";
+SELECT * FROM classes.timetable WHERE term = "18F";
 
 
 -- Truncate the current ORC data

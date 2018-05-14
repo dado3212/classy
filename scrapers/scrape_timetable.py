@@ -43,7 +43,7 @@ def scrapeCurrentClasses(yearCode, term):
 
 		matches = re.findall(
 			'<td>'+yearCode+'</td>\n' +
-			'<td>.*?</td>\n' + 
+			# '<td>.*?</td>\n' + 
 			'<td>.*?"(.*?)">(.*?)</a></td>\n' + 
 			'<td>(.*?)</td>\n' + 
 			'<td>(.*?)</td>\n' + 
@@ -63,6 +63,43 @@ def scrapeCurrentClasses(yearCode, term):
 			'<td>(.*?)</td>\n' + 
 			'<td>(.*?)</td>\n'
 		, subjects.text, flags=re.IGNORECASE)
+
+		''' Alternative sample row
+		<td>201806</td>
+		<td><A HREF= "http://dartmouth.smartcatalogiq.com/en/current/orc/Departments-Programs-Undergraduate/Spanish-and-Portuguese-Languages-and-Literatures "> SPAN</A></td>
+		<td>003</td>
+		<td>01</td>
+		<td>N</td>
+		<html>
+		<head>
+		<script language="JAVASCRIPT" type="TEXT/JAVASCRIPT">
+		function reqmat_window(thisURL) {
+		            theHeight=screen.height*.3
+		            theWidth=screen.width*.4
+		            theLeft=screen.width*.4
+		            theWindow =
+		                window.open(thisURL,'reqmatWindow','height='+theHeight+',width='+theWidth+',left='+theLeft+',directory=no,resizeable=yes, toolbar=no, scrollbars=yes')
+		                }
+		</script>
+		</head>
+		<body>
+		<td><A HREF="javascript:reqmat_window('http://oracle-www.dartmouth.edu/dart/groucho/course_desc.display_course_desc?term=201806&subj=SPAN&numb=003')">Spanish III</A></td>
+		<td><A HREF="javascript:reqmat_window('http://oracle-www.dartmouth.edu/dart/groucho/course_desc.display_non_fys_req_mat?p_term=201806&p_crn=60357')"><IMG SRC="https://banner.dartmouth.edu/wtlgifs/twgginfo.gif" BORDER=0></A></td>
+		</body>
+		</html>
+		<td>&nbsp</td>
+		<td>9S</td>
+		<td>&nbsp</td>
+		<td>&nbsp</td>
+		<td>Irasema Saucedo</td>
+		<td>&nbsp</td>
+		<td>&nbsp</td>
+		<td>18</td>
+		<td>10</td>
+		<td>&nbsp</td>
+		<td>&nbsp</td>
+		</tr>
+		'''
 		
 		''' Sample row
 		<td>201703</td>
@@ -161,4 +198,8 @@ def scrapeCurrentClasses(yearCode, term):
 		    a = csv.writer(fp, delimiter=',', encoding="utf-8", quoting=csv.QUOTE_ALL)
 		    a.writerows(allData)
 
-scrapeCurrentClasses("201703", "S17")
+# 201801 - 18W
+# 201803 - 18S
+# 201806 - 18X
+# 201809 - 18F
+scrapeCurrentClasses("201809", "18F")
