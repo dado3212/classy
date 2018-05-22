@@ -1,4 +1,4 @@
-import requests, re, urllib, json
+import requests, re, urllib, json, sys
 import unicodecsv as csv
 requests.packages.urllib3.disable_warnings()
 
@@ -43,7 +43,7 @@ def scrapeCurrentClasses(yearCode, term):
 
 		matches = re.findall(
 			'<td>'+yearCode+'</td>\n' +
-			# '<td>.*?</td>\n' + 
+			'(?:<td>.*?</td>\n)?' + 
 			'<td>.*?"(.*?)">(.*?)</a></td>\n' + 
 			'<td>(.*?)</td>\n' + 
 			'<td>(.*?)</td>\n' + 
@@ -198,8 +198,9 @@ def scrapeCurrentClasses(yearCode, term):
 		    a = csv.writer(fp, delimiter=',', encoding="utf-8", quoting=csv.QUOTE_ALL)
 		    a.writerows(allData)
 
-# 201801 - 18W
-# 201803 - 18S
-# 201806 - 18X
-# 201809 - 18F
-scrapeCurrentClasses("201809", "18F")
+if __name__ == '__main__':
+    # 201801 - 18W
+	# 201803 - 18S
+	# 201806 - 18X
+	# 201809 - 18F
+	scrapeCurrentClasses("201809", "18F")

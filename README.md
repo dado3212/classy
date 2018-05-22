@@ -14,7 +14,7 @@ I kept having difficulty figuring out what classes to take, and alternating betw
 * Filter out previous classes
 
 ### Setup
-First, you'll need to set up the MySQL database.  The `Create_Tables.sql` file in the `scrapers` folder contains the SQL code to create the tables.  Then, you'll need to create a file called `secret.php` in the `php` folder.  All that folder has is a function called "createConnection" which will need to create a PDO connection to the database with the tables you previously created.
+First, you'll need to set up the MySQL database.  The `Create_Tables.sql` file in the `scrapers` folder contains the SQL code to create the tables.  Then, you'll need to create a file called `secret.php` in the `php` folder.  All that file has is a function called "createConnection" which will need to create a PDO connection to the database with the tables you previously created.  You'll also need to create a file called `secrets.py` in the `scrapers` folder.  All that file has is a function called "mysql_connect" which returns a MySQLdb.connect call with user/password information.
 
 Then you'll need to populate the tables with the scrapers.  Information on running the scrapers can be found under the 'scrapers' subsection.  You can then upload the generated CSV files using the `Upload.sql` file, which contains the SQL code to truncate or update the existing tables from a local CSV.  Finally, add the new term to the util.php file as the last option, which will be the default.
 
@@ -32,6 +32,8 @@ The project relies on various scrapers to create a MySQL database that is querie
   <b>scrape_medians.py</b> - This Python script was adapted from <a href="https://github.com/mattgmarcus/Median-Town/blob/master/scripts/medians.py">mattgmarcus</a>'s file, who developed Median-Town.  It can just be run with no parameters, and will generate a file 'medians.csv' which contains the averaged median for each class that it found from the data from 09W up to the present (it calculates the current year).
   </li>
 </ul>
+
+The second two scrapers can be run automatically with Python 3, and `python3 update.py`.  It will automatically check for new terms, and upload them accordingly, a check that's run on my server daily.
 
 ---
 
