@@ -110,6 +110,10 @@
     "C" =>      0,
   ];
 
+  $terms = file_get_contents("../scrapers/terms.txt");
+
+  echo "<pre>" . var_export($terms, true) . "</pre>";
+
   $terms = [
     "18F",
     "18X",

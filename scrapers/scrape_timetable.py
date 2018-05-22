@@ -1,4 +1,4 @@
-import requests, re, urllib, json
+import requests, re, urllib, json, sys
 import unicodecsv as csv
 requests.packages.urllib3.disable_warnings()
 
@@ -198,6 +198,12 @@ def scrapeCurrentClasses(yearCode, term):
 		    a = csv.writer(fp, delimiter=',', encoding="utf-8", quoting=csv.QUOTE_ALL)
 		    a.writerows(allData)
 
+if __name__ == '__main__':
+    from sys import argv
+    myargs = getopts(argv)
+    if '-i' in myargs:  # Example usage.
+        print(myargs['-i'])
+    print(myargs)
 # 201801 - 18W
 # 201803 - 18S
 # 201806 - 18X
