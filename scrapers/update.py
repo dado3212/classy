@@ -1,5 +1,6 @@
 import requests, re, MySQLdb, csv
 from scrape_timetable import *
+from secrets import mysql_connect
 
 # Read in the text file
 with open('terms.txt', 'r') as f:
@@ -44,36 +45,33 @@ with requests.Session() as c:
 	currentTerms = re.findall('<input type = "checkbox" id=term.*value=(.*?)>', subjects.text, flags=re.IGNORECASE)
 
 # Figure out if there are any terms that aren't in the database
-for x in currentTerms:
-	termShortcut = x[2:4] + matchingYears[x[-2:]]
+for termCode in currentTerms:
+	termShortcut = termCode[2:4] + matchingYears[termCode[-2:]]
 	# If it's not in there, then it's time to go to work
 	if termShortcut not in databaseTerms:
-		# x = 201801
+		# termCode = 201801
 		# termShortcut = 18W
 
-		print x
-		print termShortcut
+		print 'Scraping classes for ' + termShortcut + '...'
 		# Scrape the current classes, creating a .csv file
-		scrapeCurrentClasses(x, termShortcut + 'L')
+		scrapeCurrentClasses(termCode, termShortcut + 'L')
 
+		print 'Done.  Uploading to SQL database...'
 		# Upload the .csv file to the SQL database
-		mydb = MySQLdb.connect(host='localhost',
-		    user='root',
-		    passwd='',
-		    db='mydb')
+		mydb = mysql_connect()
 		cursor = mydb.cursor()
 
-		csv_data = csv.reader(file('students.csv'))
-		for row in csv_data:
+		cursor.execute('''\
+			LOAD DATA LOCAL INFILE 'scrapeClasses_''' + termCode + '''.csv'
+			INTO TABLE `classes`.`timetable`
+			FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+			LINES TERMINATED BY '\r\n'
+			(department, `number`, fys, title, description, crosslisted, period, room, building, teacher, culture, distrib, `limit`, term);
+		''')
 
-		    cursor.execute('INSERT INTO testcsv(names, \
-		          classes, mark )' \
-		          'VALUES("%s", "%s", "%s")', 
-		          row)
-		#close the connection to the database.
 		mydb.commit()
 		cursor.close()
-		print "Done"
+		print "Done."
 
 
 '''

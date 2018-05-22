@@ -1,3 +1,4 @@
 php/secret.php
 *.csv
 *.pyc
+scrapers/secrets.py
