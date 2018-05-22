@@ -103,7 +103,7 @@ if (foundNew):
 	INTO TABLE `classes`.`medians`
 	FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 	LINES TERMINATED BY '\r\n'
-	(department, `number`, median, enrolled, term);
+	(department, `number`, median);
 	''')
 	mydb.commit()
 	cursor.close()
