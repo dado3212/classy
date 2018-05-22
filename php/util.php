@@ -110,7 +110,7 @@
     "C" =>      0,
   ];
 
-  $terms = file_get_contents("../scrapers/terms.txt");
+  $terms = explode("\n", file_get_contents("../scrapers/terms.txt"));
 
   echo "<pre>" . var_export($terms, true) . "</pre>";
 
