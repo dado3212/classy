@@ -1,12 +1,11 @@
-import requests, re, MySQLdb, csv
+import requests, re, MySQLdb, csv, os
 from scrape_timetable import *
+from scrape_medians import *
 from secrets import mysql_connect
 
 # Read in the text file
 with open('terms.txt', 'r') as f:
 	databaseTerms = [x.strip() for x in f.readlines()]
-
-print(databaseTerms)
 
 matchingYears = {
 	'01': 'W',
@@ -44,11 +43,14 @@ with requests.Session() as c:
 	# Get the current terms
 	currentTerms = re.findall('<input type = "checkbox" id=term.*value=(.*?)>', subjects.text, flags=re.IGNORECASE)
 
+foundNew = False
+
 # Figure out if there are any terms that aren't in the database
 for termCode in currentTerms:
 	termShortcut = termCode[2:4] + matchingYears[termCode[-2:]]
 	# If it's not in there, then it's time to go to work
 	if termShortcut not in databaseTerms:
+		foundNew = True
 		# termCode = 201801
 		# termShortcut = 18W
 
@@ -71,15 +73,35 @@ for termCode in currentTerms:
 
 		mydb.commit()
 		cursor.close()
-		print "Done."
+		print 'Done.'
 
+		os.remove('scrapeClasses_' + termCode + '.csv')
 
-'''
-2) Run scrape_timetable.py with the new year, generating a new .csv file.
-3) Upload the .csv file to the SQL database.
-4) Delete the new .csv file.
-5) Run the scrape_medians.py.
-6) Truncate the SQL table, and uploade from the new .csv file.
-7) Delete the new .csv file.
-8) ORC UPDATES????
-'''
+		# Append the term to the terms.txt file
+		with open('terms.txt', 'a') as f:
+			f.write('\n' + termShortcut)
+
+if (foundNew):
+	# Let's do some median work
+	print 'Scraping updated medians...'
+	compileMedians()
+
+	# Upload the .csv file to the SQL database
+	mydb = mysql_connect()
+	cursor = mydb.cursor()
+
+	cursor.execute('''
+	truncate table `classes`.`medians`;
+
+	LOAD DATA LOCAL INFILE 'medians.csv'
+	INTO TABLE `classes`.`medians`
+	FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+	LINES TERMINATED BY '\r\n'
+	(department, `number`, median, enrolled, term);
+	''')
+
+	mydb.commit()
+	cursor.close()
+	print 'Done.'
+
+	os.remove('medians.csv')

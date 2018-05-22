@@ -6,8 +6,9 @@ LINES TERMINATED BY '\r\n'
 (department, `number`, fys, title, description, crosslisted, period, room, building, teacher, culture, distrib, `limit`, term);
 
 -- Check that it worked :D
-SELECT * FROM classes.timetable WHERE term = "18F";
+SELECT * FROM classes.timetable WHERE term = "18FL";
 
+DELETE FROM classes.timetable WHERE term="18FL" AND id <> 0;
 
 -- Truncate the current ORC data
 truncate table `classes`.`orc`;
