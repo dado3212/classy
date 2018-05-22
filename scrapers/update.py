@@ -45,6 +45,8 @@ with requests.Session() as c:
 
 foundNew = False
 
+mydb = mysql_connect()
+
 # Figure out if there are any terms that aren't in the database
 for termCode in currentTerms:
 	termShortcut = termCode[2:4] + matchingYears[termCode[-2:]]
@@ -54,13 +56,13 @@ for termCode in currentTerms:
 		# termCode = 201801
 		# termShortcut = 18W
 
-		print 'Scraping classes for ' + termShortcut + '...'
+		print('Scraping classes for ' + termShortcut + '...')
 		# Scrape the current classes, creating a .csv file
 		scrapeCurrentClasses(termCode, termShortcut + 'L')
 
-		print 'Done.  Uploading to SQL database...'
+		print('Done.  Uploading to SQL database...')
 		# Upload the .csv file to the SQL database
-		mydb = mysql_connect()
+		
 		cursor = mydb.cursor()
 
 		cursor.execute('''\
@@ -73,7 +75,7 @@ for termCode in currentTerms:
 
 		mydb.commit()
 		cursor.close()
-		print 'Done.'
+		print('Done.')
 
 		os.remove('scrapeClasses_' + termCode + '.csv')
 
@@ -83,25 +85,30 @@ for termCode in currentTerms:
 
 if (foundNew):
 	# Let's do some median work
-	print 'Scraping updated medians...'
+	print('Scraping updated medians...')
 	compileMedians()
 
 	# Upload the .csv file to the SQL database
-	mydb = mysql_connect()
 	cursor = mydb.cursor()
 
 	cursor.execute('''
 	truncate table `classes`.`medians`;
+	''')
+	mydb.commit()
+	cursor.close() 
 
+	cursor = mydb.cursor() 
+	cursor.execute('''
 	LOAD DATA LOCAL INFILE 'medians.csv'
 	INTO TABLE `classes`.`medians`
 	FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 	LINES TERMINATED BY '\r\n'
 	(department, `number`, median, enrolled, term);
 	''')
-
 	mydb.commit()
 	cursor.close()
-	print 'Done.'
+	print('Done.')
 
 	os.remove('medians.csv')
+
+mydb.close()
