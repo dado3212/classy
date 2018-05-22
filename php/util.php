@@ -110,20 +110,19 @@
     "C" =>      0,
   ];
 
-  $terms = explode("\n", file_get_contents("../scrapers/terms.txt"));
-
-  echo "<pre>" . var_export($terms, true) . "</pre>";
-
-  $terms = [
-    "18F",
-    "18X",
-    "18S",
-    "18W",
-    "17F",
-    "17S",
-    "16W",
-    "16S",
+  $termOrdering = [
+    'F' => 4,
+    'X' => 3,
+    'S' => 2,
+    'W' => 1,
   ];
+
+  $terms = explode("\n", file_get_contents(dirname(__FILE__) . "/../scrapers/terms.txt"));
+  usort($terms, function($a, $b) use ($termOrdering) {
+    $aNum = intval(substr($a, 0, 2)) * 100 + $termOrdering[substr($a, -1)];
+    $bNum = intval(substr($b, 0, 2)) * 100 + $termOrdering[substr($b, -1)];
+    return $bNum - $aNum;
+  });
 
   function getClassesFromString($string) {
     preg_match_all("/Subject.*?Grade[\s]*R\n((.+?)[\s]*(\d+).*\n)*/", $string, $sections);
