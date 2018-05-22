@@ -58,7 +58,7 @@ for termCode in currentTerms:
 
 		print('Scraping classes for ' + termShortcut + '...')
 		# Scrape the current classes, creating a .csv file
-		scrapeCurrentClasses(termCode, termShortcut + 'L')
+		scrapeCurrentClasses(termCode, termShortcut)
 
 		print('Done.  Uploading to SQL database...')
 		# Upload the .csv file to the SQL database
